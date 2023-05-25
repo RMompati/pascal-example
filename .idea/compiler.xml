@@ -10,8 +10,5 @@
         <module name="pascal-example" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="pascal-example" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>
