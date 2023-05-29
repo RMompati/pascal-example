@@ -1,8 +1,8 @@
 package com.rmompati.lang.pascal.frontend;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import com.rmompati.lang.pascal.frontend.message.*;
+import com.rmompati.lang.pascal.message.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  *
  * <p>The framework class that represents the source program.</p>
  * */
-public class Source {
+public class Source implements MessageProducer {
   /** End-of-line character. */
   public static final char EOL = '\n';
   /** end-of-file character. */
@@ -26,6 +26,12 @@ public class Source {
   private int lineNum;
   /** current source line position. */
   private int currentPos;
+
+  private static MessageHandler messageHandler;
+
+  static {
+    messageHandler = new MessageHandler();
+  }
 
   /**
    * Constructor.
@@ -94,6 +100,10 @@ public class Source {
     if (line == null) {
       ++lineNum;
     }
+
+    if (line != null) {
+      sendMessage(new Message(MessageType.SOURCE_LINE, new Object[]{lineNum, line}));
+    }
   }
 
   /**
@@ -141,5 +151,35 @@ public class Source {
 
   public void setCurrentPos(int currentPos) {
     this.currentPos = currentPos;
+  }
+
+  /**
+   * Adds a lister to the listener list.
+   *
+   * @param listener the listener to add.
+   */
+  @Override
+  public void addMessageListener(MessageListener listener) {
+    messageHandler.addListener(listener);
+  }
+
+  /**
+   * Remove a listener from the listener list.
+   *
+   * @param listener the listener to remove.
+   */
+  @Override
+  public void removeMessageListener(MessageListener listener) {
+    messageHandler.removeListener(listener);
+  }
+
+  /**
+   * Notify listeners after setting the message.
+   *
+   * @param message the message to send.
+   */
+  @Override
+  public void sendMessage(Message message) {
+    messageHandler.sendMessage(message);
   }
 }

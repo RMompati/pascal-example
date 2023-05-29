@@ -1,5 +1,9 @@
 package com.rmompati.lang.pascal.frontend;
 
+import com.rmompati.lang.pascal.message.Message;
+import com.rmompati.lang.pascal.message.MessageHandler;
+import com.rmompati.lang.pascal.message.MessageListener;
+import com.rmompati.lang.pascal.message.MessageProducer;
 import com.rmompati.lang.pascal.frontend.token.Token;
 
 /**
@@ -8,12 +12,14 @@ import com.rmompati.lang.pascal.frontend.token.Token;
  * <p>A language-independent framework class. This abstract parser class will be implemented by language-specific
  * sub-classes.</p>
  * */
-public abstract class Parser {
+public abstract class Parser implements MessageProducer {
 
   /** The generated symbol table. */
   protected static SymTable symTable;
+  protected static MessageHandler messageHandler;
   static {
     symTable = null;
+    messageHandler = new MessageHandler();
   }
 
   /** The scanner used with this parser. */
@@ -62,5 +68,35 @@ public abstract class Parser {
    */
   public Token nextToken() throws Exception {
     return scanner.nextToken();
+  }
+
+  /**
+   * Adds a lister to the listener list.
+   *
+   * @param listener the listener to add.
+   */
+  @Override
+  public void addMessageListener(MessageListener listener) {
+    messageHandler.addListener(listener);
+  }
+
+  /**
+   * Remove a listener from the listener list.
+   *
+   * @param listener the listener to remove.
+   */
+  @Override
+  public void removeMessageListener(MessageListener listener) {
+    messageHandler.removeListener(listener);
+  }
+
+  /**
+   * Notify listeners after setting the message.
+   *
+   * @param message the message to send.
+   */
+  @Override
+  public void sendMessage(Message message) {
+    messageHandler.sendMessage(message);
   }
 }

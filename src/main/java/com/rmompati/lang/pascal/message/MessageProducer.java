@@ -1,4 +1,4 @@
-package com.rmompati.lang.pascal.frontend.message;
+package com.rmompati.lang.pascal.message;
 
 public interface MessageProducer {
 
