@@ -12,3 +12,9 @@
 >   - Simple end-to-end runs that exercise the components by generating source program listings from the common frontend
 > and messages from the compiler or interpreter backend.
 
+### The noted design patterns
+>   - The Observer design pattern
+>     - #### The classes and interfaces.
+>       - MessageProducer interface
+>       - MessageListener interface
+>       - MessageHandler class
