@@ -1,5 +1,7 @@
 package com.rmompati.lang.pascal.frontend;
 
+import com.rmompati.lang.pascal.intermediate.ICode;
+import com.rmompati.lang.pascal.intermediate.SymTable;
 import com.rmompati.lang.pascal.message.Message;
 import com.rmompati.lang.pascal.message.MessageHandler;
 import com.rmompati.lang.pascal.message.MessageListener;
