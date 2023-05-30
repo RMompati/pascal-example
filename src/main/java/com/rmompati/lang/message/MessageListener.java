@@ -1,4 +1,4 @@
-package com.rmompati.lang.pascal.message;
+package com.rmompati.lang.message;
 
 public interface MessageListener {
 

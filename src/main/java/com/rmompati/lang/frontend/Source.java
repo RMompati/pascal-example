@@ -1,6 +1,7 @@
-package com.rmompati.lang.pascal.frontend;
+package com.rmompati.lang.frontend;
 
 
+import com.rmompati.lang.message.*;
 import com.rmompati.lang.pascal.frontend.message.*;
 import com.rmompati.lang.pascal.message.*;
 

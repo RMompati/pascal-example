@@ -1,12 +1,12 @@
-package com.rmompati.lang.pascal.frontend;
+package com.rmompati.lang.frontend;
 
-import com.rmompati.lang.pascal.intermediate.ICode;
-import com.rmompati.lang.pascal.intermediate.SymTable;
-import com.rmompati.lang.pascal.message.Message;
-import com.rmompati.lang.pascal.message.MessageHandler;
-import com.rmompati.lang.pascal.message.MessageListener;
-import com.rmompati.lang.pascal.message.MessageProducer;
-import com.rmompati.lang.pascal.frontend.token.Token;
+import com.rmompati.lang.intermediate.ICode;
+import com.rmompati.lang.intermediate.SymTable;
+import com.rmompati.lang.message.Message;
+import com.rmompati.lang.message.MessageHandler;
+import com.rmompati.lang.message.MessageListener;
+import com.rmompati.lang.message.MessageProducer;
+import com.rmompati.lang.frontend.token.Token;
 
 /**
  * <h1>Parser</h1>

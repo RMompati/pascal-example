@@ -1,6 +1,6 @@
-package com.rmompati.lang.pascal.frontend.token;
+package com.rmompati.lang.frontend.token;
 
-import com.rmompati.lang.pascal.frontend.Source;
+import com.rmompati.lang.frontend.Source;
 
 /**
  * <h1>Token</h1>

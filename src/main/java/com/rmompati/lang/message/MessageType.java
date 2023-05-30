@@ -1,4 +1,4 @@
-package com.rmompati.lang.pascal.message;
+package com.rmompati.lang.message;
 
 public enum MessageType {
   SOURCE_LINE, SYNTAX_ERROR, PARSER_SUMMARY, INTERPRETER_SUMMARY, COMPILER_SUMMARY,
