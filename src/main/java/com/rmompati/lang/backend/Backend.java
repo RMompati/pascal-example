@@ -3,13 +3,14 @@ package com.rmompati.lang.backend;
 import com.rmompati.lang.intermediate.ICode;
 import com.rmompati.lang.intermediate.SymTable;
 import com.rmompati.lang.message.MessageHandler;
+import com.rmompati.lang.message.MessageProducer;
 
 /**
  * <h1>Backend</h1>
  *
  * <p>The framework class that represents the back end component.</p>
  */
-public abstract class Backend {
+public abstract class Backend implements MessageProducer {
 
   protected static MessageHandler messageHandler;
 
