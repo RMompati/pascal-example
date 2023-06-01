@@ -2,8 +2,6 @@ package com.rmompati.lang.frontend;
 
 
 import com.rmompati.lang.message.*;
-import com.rmompati.lang.pascal.frontend.message.*;
-import com.rmompati.lang.pascal.message.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,6 +57,9 @@ public class Source implements MessageProducer {
       return EOF;
     } else if ((currentPos == -1) || (currentPos == line.length())) {
       return EOL;
+    } else if ((currentPos > line.length())) {
+      readLine();
+      return nextChar();
     } else {
       return line.charAt(currentPos);
     }
@@ -97,8 +98,8 @@ public class Source implements MessageProducer {
    */
   public void readLine() throws IOException {
     line = reader.readLine();
-    currentPos = -1;
-    if (line == null) {
+    currentPos = 0;
+    if (line != null) {
       ++lineNum;
     }
 
