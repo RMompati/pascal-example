@@ -2,8 +2,8 @@ package com.rmompati.lang.pascal.frontend;
 
 import com.rmompati.lang.frontend.Parser;
 import com.rmompati.lang.frontend.Scanner;
-import com.rmompati.lang.frontend.token.EofToken;
-import com.rmompati.lang.frontend.token.Token;
+import com.rmompati.lang.frontend.EofToken;
+import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageType;
 

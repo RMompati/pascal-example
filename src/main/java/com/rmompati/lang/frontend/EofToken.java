@@ -1,6 +1,4 @@
-package com.rmompati.lang.frontend.token;
-
-import com.rmompati.lang.frontend.Source;
+package com.rmompati.lang.frontend;
 
 public class EofToken extends Token {
 

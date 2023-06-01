@@ -6,7 +6,6 @@ import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageHandler;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageProducer;
-import com.rmompati.lang.frontend.token.Token;
 
 /**
  * <h1>Parser</h1>

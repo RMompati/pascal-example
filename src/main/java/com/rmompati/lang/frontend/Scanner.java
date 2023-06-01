@@ -1,7 +1,5 @@
 package com.rmompati.lang.frontend;
 
-import com.rmompati.lang.frontend.token.Token;
-
 /**
  * <h1>Scanner</h1>
  *

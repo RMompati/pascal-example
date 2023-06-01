@@ -18,3 +18,5 @@
 >       - MessageProducer interface
 >       - MessageListener interface
 >       - MessageHandler class
+
+Wrapping up chapter 2 with integrating all the components in the main class: **Pascal.java**
