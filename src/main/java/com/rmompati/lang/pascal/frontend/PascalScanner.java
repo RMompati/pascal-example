@@ -1,8 +1,8 @@
 package com.rmompati.lang.pascal.frontend;
 
+import com.rmompati.lang.frontend.EofToken;
 import com.rmompati.lang.frontend.Scanner;
 import com.rmompati.lang.frontend.Source;
-import com.rmompati.lang.frontend.EofToken;
 import com.rmompati.lang.frontend.Token;
 
 import static com.rmompati.lang.frontend.Source.EOF;

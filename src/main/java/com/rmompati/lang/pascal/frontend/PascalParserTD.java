@@ -1,11 +1,16 @@
 package com.rmompati.lang.pascal.frontend;
 
-import com.rmompati.lang.frontend.Parser;
-import com.rmompati.lang.frontend.Scanner;
-import com.rmompati.lang.frontend.EofToken;
-import com.rmompati.lang.frontend.Token;
+import com.rmompati.lang.frontend.*;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageType;
+import com.rmompati.lang.pascal.frontend.error.PascalErrorCode;
+import com.rmompati.lang.pascal.frontend.error.PascalErrorHandler;
+
+import java.io.IOException;
+
+import static com.rmompati.lang.message.MessageType.TOKEN;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.ERROR;
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.IO_ERROR;
 
 /**
  * <h1>PascalParserTD</h1>
@@ -13,6 +18,9 @@ import com.rmompati.lang.message.MessageType;
  * <p>The top-down Pascal parser.</p>
  */
 public class PascalParserTD extends Parser {
+
+  protected static PascalErrorHandler errorHandler = new PascalErrorHandler();
+
   /**
    * Constructor
    *
@@ -33,11 +41,27 @@ public class PascalParserTD extends Parser {
     Token token;
     long startTime = System.currentTimeMillis();
 
-    while (!((token = nextToken()) instanceof EofToken)) {}
+    try {
+      while (!((token = nextToken()) instanceof EofToken)) {
+        TokenType tokenType = token.getType();
+        if (tokenType != ERROR) {
+          // Format each token
+          sendMessage(new Message(
+              TOKEN, new Object[] {token.getLineNum(), token.getPosition(), tokenType, token.getText(), token.getValue()}
+          ));
+        } else {
+          errorHandler.flag(token, (PascalErrorCode) token.getValue(), this);
+        }
+      }
 
-    // Send the parser summary message.
-    float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
-    sendMessage(new Message(MessageType.PARSER_SUMMARY, new Number[]{token.getLineNum(), getErrorCount(), elapsedTime}));
+      // Send the parser summary message.
+      float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
+      sendMessage(new Message(
+          MessageType.PARSER_SUMMARY, new Number[]{token.getLineNum(), getErrorCount(), elapsedTime}
+      ));
+    } catch (IOException exc) {
+      errorHandler.abortTranslation(IO_ERROR, this);
+    }
   }
 
   /**
@@ -48,6 +72,6 @@ public class PascalParserTD extends Parser {
    */
   @Override
   public int getErrorCount() {
-    return 0;
+    return errorHandler.getErrorCount();
   }
 }

@@ -13,6 +13,7 @@ import static com.rmompati.lang.message.MessageType.SYNTAX_ERROR;
  * <p>Error handler Pascal syntax errors.</p>*/
 public class PascalErrorHandler {
   private static final int MAX_ERRORS = 25;
+
   /** Count of syntax errors. */
   private static int errorCount = 0;
 
@@ -38,5 +39,9 @@ public class PascalErrorHandler {
     String fatalText = "FATAL ERROR: " + errorCode.toString();
     parser.sendMessage(new Message(SYNTAX_ERROR, new Object[]{0, 0, "", fatalText}));
     System.exit(errorCode.getStatus());
+  }
+
+  public int getErrorCount() {
+    return errorCount;
   }
 }

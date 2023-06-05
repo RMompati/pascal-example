@@ -33,7 +33,5 @@ public class PascalErrorToken extends PascalToken {
    * @throws Exception if an error occurs.
    */
   @Override
-  protected void extract() throws Exception {
-    super.extract();
-  }
+  protected void extract() throws Exception {}
 }
