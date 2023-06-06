@@ -98,7 +98,7 @@ public class Source implements MessageProducer {
    */
   public void readLine() throws IOException {
     line = reader.readLine();
-    currentPos = 0;
+    currentPos = -1;
     if (line != null) {
       ++lineNum;
     }
