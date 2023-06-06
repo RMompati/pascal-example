@@ -44,7 +44,7 @@ public class PascalScanner extends Scanner {
       token = new PascalWordToken(source);
     } else if(Character.isDigit(currentChar)) {
       token = new PascalNumberToken(source);
-    } else if(currentChar == '\"') {
+    } else if(currentChar == '\'') {
       token = new PascalStringToken(source);
     } else if(PascalTokenType.SPECIAL_SYMBOLS.containsKey(Character.toString(currentChar))) {
       token = new PascalSpecialSymbolToken(source);

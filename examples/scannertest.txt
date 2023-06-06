@@ -10,13 +10,13 @@ Hello World
 begin BEGIN Begin BeGiN begins
 
 {String tokens}
-"Hello, world"
-"It's Friday"
-""
-""""" """""
-"This string
+'Hello, world'
+'It''s Friday!'
+''
+' '' '' '
+'This string
 spans
-source lines."
+source lines.'
 
 {Special Symbol tokens}
 + - * / := . , ; : = <> < <= >= > ( ) [ ] { } } ^ ..
@@ -33,4 +33,4 @@ source lines."
 {Bad tokens}
 123e99 123456789012345 1234.56E. 3. 5.. .14 314.e-2
 What?
-"String not closed
+''String not closed
