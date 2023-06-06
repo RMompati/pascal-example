@@ -2,7 +2,7 @@ package com.rmompati.lang.frontend;
 
 public class EofToken extends Token {
 
-  private TokenType tokenType;
+  private final TokenType tokenType;
 
   /**
    * Constructor.

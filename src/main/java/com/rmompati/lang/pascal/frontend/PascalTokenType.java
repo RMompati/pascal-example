@@ -30,7 +30,7 @@ public enum PascalTokenType implements TokenType {
   private final static int LAST_SPECIAL_INDEX = DOT_DOT.ordinal();
 
   /** Token text */
-  private String text;
+  private final String text;
 
   /**
    * Constructor

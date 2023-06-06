@@ -3,7 +3,6 @@ package com.rmompati.lang.pascal.frontend.error;
 import com.rmompati.lang.frontend.Parser;
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.message.Message;
-import com.rmompati.lang.message.MessageType;
 
 import static com.rmompati.lang.message.MessageType.SYNTAX_ERROR;
 
