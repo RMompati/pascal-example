@@ -2,6 +2,9 @@ package com.rmompati.lang.pascal.frontend;
 
 import com.rmompati.lang.frontend.TokenType;
 
+import java.util.HashSet;
+import java.util.Hashtable;
+
 public enum PascalTokenType implements TokenType {
 
   // Reserved Words
@@ -20,6 +23,13 @@ public enum PascalTokenType implements TokenType {
   IDENTIFIER, INTEGER, REAL, STRING,
   ERROR, END_OF_FILE;
 
+  private final static int FIRST_RESERVED_WORD_INDEX = AND.ordinal();
+  private final static int LAST_RESERVED_WORD_INDEX = WITH.ordinal();
+
+  private final static int FIRST_SPECIAL_INDEX = PLUS.ordinal();
+  private final static int LAST_SPECIAL_INDEX = DOT_DOT.ordinal();
+
+  /** Token text */
   private String text;
 
   /**
@@ -39,5 +49,23 @@ public enum PascalTokenType implements TokenType {
    */
   public String getText() {
     return text;
+  }
+
+  /** Set of lower-cased Pascal reserved word text strings. */
+  public static final HashSet<String> RESERVED_WORDS = new HashSet<>();
+  static {
+    PascalTokenType[] values = PascalTokenType.values();
+    for (int i = FIRST_RESERVED_WORD_INDEX; i <= LAST_RESERVED_WORD_INDEX; ++i) {
+      RESERVED_WORDS.add(values[i].getText().toLowerCase());
+    }
+  }
+
+  /** Hash table of Pascal special symbols. Each special symbol;s text is the key to its Pascal token type. */
+  public static final Hashtable<String, PascalTokenType> SPECIAL_SYMBOLS = new Hashtable<>();
+  static {
+    PascalTokenType[] values = PascalTokenType.values();
+    for (int i = FIRST_SPECIAL_INDEX; i <= LAST_SPECIAL_INDEX; ++i) {
+      SPECIAL_SYMBOLS.put(values[i].getText(), values[i]);
+    }
   }
 }
