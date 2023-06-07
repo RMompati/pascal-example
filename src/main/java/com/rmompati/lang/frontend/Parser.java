@@ -1,7 +1,9 @@
 package com.rmompati.lang.frontend;
 
 import com.rmompati.lang.intermediate.ICode;
+import com.rmompati.lang.intermediate.SymTabStack;
 import com.rmompati.lang.intermediate.SymTable;
+import com.rmompati.lang.intermediate.SymTableFactory;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageHandler;
 import com.rmompati.lang.message.MessageListener;
@@ -16,10 +18,10 @@ import com.rmompati.lang.message.MessageProducer;
 public abstract class Parser implements MessageProducer {
 
   /** The generated symbol table. */
-  protected static SymTable symTable;
+  protected static SymTabStack symTabStack;
   protected static MessageHandler messageHandler;
   static {
-    symTable = null;
+    symTabStack = SymTableFactory.createSymTabStack();
     messageHandler = new MessageHandler();
   }
 
@@ -106,6 +108,6 @@ public abstract class Parser implements MessageProducer {
   }
 
   public SymTable getSymTable() {
-    return symTable;
+    return symTabStack.getLocalSymTab();
   }
 }
