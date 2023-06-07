@@ -2,7 +2,7 @@ package com.rmompati.lang.backend.compiler;
 
 import com.rmompati.lang.backend.Backend;
 import com.rmompati.lang.intermediate.ICode;
-import com.rmompati.lang.intermediate.SymTable;
+import com.rmompati.lang.intermediate.SymTabStack;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageType;
@@ -19,11 +19,11 @@ public class CodeGenerator extends Backend {
    * generate machine-language instructions.
    *
    * @param iCode    the intermediate code.
-   * @param symTable the symbol table.
+   * @param symTabStack the symbol table stack.
    * @throws Exception if an exception occurs.
    */
   @Override
-  public void process(ICode iCode, SymTable symTable) throws Exception {
+  public void process(ICode iCode, SymTabStack symTabStack) throws Exception {
     long startTime = System.currentTimeMillis();
     float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;
     int instructionCount = 0;
