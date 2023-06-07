@@ -17,4 +17,25 @@ public interface SymTabStack {
      * @return the local symbol table.
      */
     public SymTable getLocalSymTab();
+
+    /**
+     * Creates and enters a new entry into the local symbol table.
+     * @param name the of the entry.
+     * @return the new entry.
+     */
+    public SymTableEntry enterLocal(String name);
+
+  /**
+   * Looks up an existing symbol table entry in the local symbol table.
+   * @param name the name of the entry.
+   * @return the entry, or null if it does not exist.
+   */
+  public SymTableEntry lookupLocal(String name);
+
+  /**
+   * Looks up an existing symbol table entry throughout the stack.
+   * @param name the name of the entry.
+   * @return the entry, or null if it does not exist.
+   */
+  public SymTableEntry lookup(String name);
 }
