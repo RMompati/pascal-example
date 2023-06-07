@@ -7,9 +7,9 @@ package com.rmompati.lang.intermediate;
  */
 public interface SymTable {
 
-    /**
-     * Gets the nesting level
-     * @return the scope nesting level of this entry.
-     */
-    public int getNestingLevel();
+  /**
+   * Gets the nesting level
+   * @return the scope nesting level of this entry.
+   */
+  public int getNestingLevel();
 }
