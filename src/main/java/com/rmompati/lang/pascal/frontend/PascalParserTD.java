@@ -1,6 +1,7 @@
 package com.rmompati.lang.pascal.frontend;
 
 import com.rmompati.lang.frontend.*;
+import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageType;
 import com.rmompati.lang.pascal.frontend.error.PascalErrorCode;
@@ -8,8 +9,8 @@ import com.rmompati.lang.pascal.frontend.error.PascalErrorHandler;
 
 import java.io.IOException;
 
-import static com.rmompati.lang.message.MessageType.TOKEN;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.ERROR;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.IDENTIFIER;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.IO_ERROR;
 
 /**
@@ -44,12 +45,18 @@ public class PascalParserTD extends Parser {
     try {
       while (!((token = nextToken()) instanceof EofToken)) {
         TokenType tokenType = token.getType();
-        if (tokenType != ERROR) {
-          // Format each token
-          sendMessage(new Message(
-              TOKEN, new Object[] {token.getLineNum(), token.getPosition(), tokenType, token.getText(), token.getValue()}
-          ));
-        } else {
+        if (tokenType == IDENTIFIER) {
+          String name = token.getText().toLowerCase();
+
+          // If it's not already in the symbol table, create and enter a new entry for the identifier.
+          SymTableEntry entry = symTabStack.lookup(name);
+          if (entry == null) {
+            entry = symTabStack.enterLocal(name);
+          }
+
+          // Append the current line number.
+          entry.appendLineNumber(token.getLineNum());
+        } else if (tokenType == ERROR){
           errorHandler.flag(token, (PascalErrorCode) token.getValue(), this);
         }
       }

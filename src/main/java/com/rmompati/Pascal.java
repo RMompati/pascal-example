@@ -7,10 +7,12 @@ import com.rmompati.lang.frontend.Parser;
 import com.rmompati.lang.frontend.Source;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.ICode;
+import com.rmompati.lang.intermediate.SymTabStack;
 import com.rmompati.lang.intermediate.SymTable;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageType;
+import com.rmompati.lang.util.CrossReferencer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,8 +29,8 @@ public class Pascal {
   private Parser parser;
   private Source source;
   private ICode iCode;
-  private SymTable symTable;
   private Backend backend;
+  private SymTabStack symTabStack;
 
   /**
    * Compiles or interprets a Pascal source Program.
@@ -51,9 +53,14 @@ public class Pascal {
       source.close();
 
       iCode = parser.getiCode();
-      symTable = parser.getSymTable();
+      symTabStack = parser.getSymTabStack();
 
-      backend.process(iCode, symTable);
+      if (xref) {
+        CrossReferencer crossReferencer = new CrossReferencer();
+        crossReferencer.print(symTabStack);
+      }
+
+      backend.process(iCode, symTabStack);
     } catch (Exception exc) {
       System.out.println("**** Internal translator error. *****");
       exc.printStackTrace();
