@@ -3,7 +3,6 @@ package com.rmompati.lang.backend.interpreter;
 import com.rmompati.lang.backend.Backend;
 import com.rmompati.lang.intermediate.ICode;
 import com.rmompati.lang.intermediate.SymTabStack;
-import com.rmompati.lang.intermediate.SymTable;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageType;

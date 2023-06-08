@@ -8,7 +8,6 @@ import com.rmompati.lang.frontend.Source;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.ICode;
 import com.rmompati.lang.intermediate.SymTabStack;
-import com.rmompati.lang.intermediate.SymTable;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageType;
