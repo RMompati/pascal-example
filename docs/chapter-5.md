@@ -8,48 +8,31 @@
 
 ### Syntax Diagrams | Rules
 
-[//]: # (> ``statement = compoundStatement | assignmentStatement``)
-
-[//]: # (> )
-
-[//]: # (> ``statmentList = statment | statment ; statementList `` * I hope so)
-
-[//]: # (> )
-
-[//]: # (> ``compoundStatement = BEGIN statmentList END ``)
-
-[//]: # (> )
-
-[//]: # (> ``assignmentStatement = variable := expression``)
-
-[//]: # (>)
-
-[//]: # (> ``variable = identifier``)
-
-[//]: # (>)
-
-[//]: # (> ``identifier = word``)
-
-[//]: # (> )
-
-[//]: # (> ```)
-
-[//]: # (> expression =  simpleExpression = simpleExpression     |)
-
-[//]: # (>               simpleExpression <> simpleExpression    |)
-
-[//]: # (>               simpleExpression < simpleExpression     |)
-
-[//]: # (>               simpleExpression <= simpleExpression    |)
-
-[//]: # (>               simpleExpression > simpleExpression     |)
-
-[//]: # (>               simpleExpression >= simpleExpression)
-
-[//]: # (> ```)
-
-[//]: # (> ```)
-
-[//]: # (> simpleExpression = &#40;+-&#41;? term | &#40;+-&#41;? term + term | &#40;+-&#41;? term - term | &#40;+-&#41;? term OR term)
-
-[//]: # (>````)
+> ``statement = compoundStatement | assignmentStatement``
+>
+> ``statmentList = statment | statment ; statementList `` * I hope so
+>
+> ``compoundStatement = BEGIN statmentList END ``
+>
+> ``assignmentStatement = variable := expression``
+> ```
+> expression =  simpleExpression = simpleExpression     |
+>               simpleExpression <> simpleExpression    |
+>               simpleExpression < simpleExpression     |
+>               simpleExpression <= simpleExpression    |
+>               simpleExpression > simpleExpression     |
+>               simpleExpression >= simpleExpression
+> ```
+> ```
+> simpleExpression = (+-)? term | simpleExpression + term | simpleExpression - term | simpleExpression OR term
+> ```
+> ```
+> term = factor | term * factor | term / factor | term DIV factor | term MOD factor | term AND factor
+> ```
+> ```
+> factor = variable | number | string | NOT factor | ( expression )
+> ```
+>
+> ``variable = identifier``
+>
+> ``identifier = word``
