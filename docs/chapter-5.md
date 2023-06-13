@@ -8,31 +8,79 @@
 
 ### Syntax Diagrams | Rules
 
-> ``statement = compoundStatement | assignmentStatement``
->
-> ``statmentList = statment | statment ; statementList `` * I hope so
->
-> ``compoundStatement = BEGIN statmentList END ``
->
-> ``assignmentStatement = variable := expression``
+> ### Statement
 > ```
-> expression =  simpleExpression = simpleExpression     |
->               simpleExpression <> simpleExpression    |
->               simpleExpression < simpleExpression     |
->               simpleExpression <= simpleExpression    |
->               simpleExpression > simpleExpression     |
->               simpleExpression >= simpleExpression
+> statement = compoundStatement | assignmentStatement
+>```
+> ### Statement List
 > ```
+> statmentList = statment ";" | statment ";" statementList
+>```
+> ### Compound Statement
 > ```
-> simpleExpression = (+-)? term | simpleExpression + term | simpleExpression - term | simpleExpression OR term
+> compoundStatement = "BEGIN" statmentList "END"
+>```
+> ### Assignment Statement
 > ```
+> assignmentStatement = variable ":=" expression
+>```
+> ### An Expression
 > ```
-> term = factor | term * factor | term / factor | term DIV factor | term MOD factor | term AND factor
+> expression =  simpleExpression rel_op simpleExpression
 > ```
+> ### Relational Operators
+>```
+> rel_op = "=" | "<>" | "<" | "<=" | ">" | ">="
 > ```
-> factor = variable | number | string | NOT factor | ( expression )
+> ### Simple Expression
 > ```
->
-> ``variable = identifier``
->
-> ``identifier = word``
+> simpleExpression = neg_op term | simpleExpression add_op term
+> ```
+> ### Negation Operators
+> ```
+> neg_op = "-" | "+" | ε
+> ```
+> ### Additive Operators
+> ```
+> add_op = "+" | "-" | "OR"
+> ```
+> ### Term
+> ```
+> term = factor | term mul_op factor
+> ```
+> ### Multiplicative Operators
+>```
+> mul_op = "*" | "/" | "AND" | "DIV" | "MOD"
+>```
+> ### Factor
+> ```
+> factor = variable | number | string | "NOT" factor | "(" expression ")"
+> ```
+> ### Variable
+> ```
+> variable = identifier
+>```
+> ### String
+> ```
+> string = "'" (char | whitespace)* "'"
+>```
+> ### Number
+> ```
+> number = digit+
+>```
+> ### Identifier
+> ```
+> identifier = char[char _]*
+>```
+> ### Digit
+> ```
+> digit = [0-9]
+>```
+> ### Char
+> ```
+> char = [a-zA-Z]
+>```
+> ### Whitespaces
+> ```
+> whitespace = [\t\r\n ]
+>```
