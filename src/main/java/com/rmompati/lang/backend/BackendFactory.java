@@ -14,7 +14,7 @@ public class BackendFactory {
     if (operation.equalsIgnoreCase("compile")) {
       return new CodeGenerator();
     } else if (operation.equalsIgnoreCase("execute")) {
-      return new Executor();
+      return new Executor(null);
     } else {
       throw new Exception("Backend Factory: Invalid operation \"" + operation + "\"");
     }
