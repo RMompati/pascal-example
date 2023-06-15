@@ -12,6 +12,7 @@ import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageListener;
 import com.rmompati.lang.message.MessageType;
 import com.rmompati.lang.util.CrossReferencer;
+import com.rmompati.lang.util.ParseTreePrinter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -57,6 +58,11 @@ public class Pascal {
       if (xref) {
         CrossReferencer crossReferencer = new CrossReferencer();
         crossReferencer.print(symTabStack);
+      }
+
+      if (intermediate) {
+        ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
+        treePrinter.print(iCode);
       }
 
       backend.process(iCode, symTabStack);

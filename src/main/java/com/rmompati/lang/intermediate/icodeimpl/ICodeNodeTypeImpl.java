@@ -14,10 +14,10 @@ public enum ICodeNodeTypeImpl implements ICodeNodeType {
   EQ, NE, LT, LE, GT, GE, NOT,
 
   // Additive operators
-  ADD, SUBTRACT, OR, NEGATIVE,
+  ADD, SUBTRACT, OR, NEGATE,
 
   // Multiplicative operators.
-  MULTIPLY, INTEGER_DIVIDE, FLOAT_DIVIDE, MODE, AND,
+  MULTIPLY, INTEGER_DIVIDE, FLOAT_DIVIDE, MOD, AND,
 
   // Operands
   VARIABLE, SUBSCRIPTS, FIELD,

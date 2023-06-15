@@ -55,6 +55,14 @@ public abstract class Parser implements MessageProducer {
   public abstract int getErrorCount();
 
   /**
+   * Gets the scanner.
+   * @return the scanner.
+   */
+  public Scanner getScanner() {
+    return scanner;
+  }
+
+  /**
    * Call the scanner's {@link Scanner#currentToken()} method.
    * @return the current token.
    */

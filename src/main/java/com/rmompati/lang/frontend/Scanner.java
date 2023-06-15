@@ -31,7 +31,8 @@ public abstract class Scanner {
    * @throws Exception if an error occurs.
    */
   public Token nextToken() throws Exception {
-    return extractToken();
+    currentToken = extractToken();
+    return currentToken;
   }
 
   /**

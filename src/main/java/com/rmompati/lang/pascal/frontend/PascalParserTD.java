@@ -1,17 +1,20 @@
 package com.rmompati.lang.pascal.frontend;
 
-import com.rmompati.lang.frontend.*;
-import com.rmompati.lang.intermediate.SymTableEntry;
+import com.rmompati.lang.frontend.Parser;
+import com.rmompati.lang.frontend.Scanner;
+import com.rmompati.lang.frontend.Token;
+import com.rmompati.lang.intermediate.ICodeFactory;
+import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageType;
-import com.rmompati.lang.pascal.frontend.error.PascalErrorCode;
 import com.rmompati.lang.pascal.frontend.error.PascalErrorHandler;
+import com.rmompati.lang.pascal.frontend.parsers.StatementParser;
 
 import java.io.IOException;
 
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.ERROR;
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.IDENTIFIER;
-import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.IO_ERROR;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.BEGIN;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.DOT;
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 
 /**
  * <h1>PascalParserTD</h1>
@@ -32,6 +35,14 @@ public class PascalParserTD extends Parser {
   }
 
   /**
+   * Constructor for subclasses.
+   * @param parent the parent parser.
+   */
+  public PascalParserTD(PascalParserTD parent) {
+    super(parent.getScanner());
+  }
+
+  /**
    * Parse a source program and generate the intermediate code and the symbol table.
    * To be implemented by a language-specific parser subclass.
    *
@@ -39,27 +50,34 @@ public class PascalParserTD extends Parser {
    */
   @Override
   public void parse() throws Exception {
-    Token token;
     long startTime = System.currentTimeMillis();
+    iCode = ICodeFactory.createICode();
 
     try {
-      while (!((token = nextToken()) instanceof EofToken)) {
-        TokenType tokenType = token.getType();
-        if (tokenType == IDENTIFIER) {
-          String name = token.getText().toLowerCase();
+      Token token = nextToken();
+      ICodeNode rootNode = null;
 
-          // If it's not already in the symbol table, create and enter a new entry for the identifier.
-          SymTableEntry entry = symTabStack.lookup(name);
-          if (entry == null) {
-            entry = symTabStack.enterLocal(name);
-          }
-
-          // Append the current line number.
-          entry.appendLineNumber(token.getLineNum());
-        } else if (tokenType == ERROR){
-          errorHandler.flag(token, (PascalErrorCode) token.getValue(), this);
-        }
+      // Look for the "BEGIN" token to parse a compound statement.
+      if (token.getType() == BEGIN) {
+        StatementParser statementParser = new StatementParser(this);
+        rootNode = statementParser.parse(token);
+        token = currentToken();
+      } else {
+        errorHandler.flag(token, UNEXPECTED_TOKEN, this);
       }
+
+      // Look for the final period.
+      if (token.getType() != DOT) {
+        errorHandler.flag(token, MISSING_PERIOD, this);
+      }
+
+      token = currentToken();
+
+      // Set the parse root node.
+      if (rootNode != null) {
+        iCode.setRoot(rootNode);
+      }
+
 
       // Send the parser summary message.
       float elapsedTime = (System.currentTimeMillis() - startTime) / 1000f;

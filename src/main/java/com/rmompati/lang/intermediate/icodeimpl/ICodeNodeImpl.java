@@ -5,7 +5,10 @@ import com.rmompati.lang.intermediate.ICodeKey;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.ICodeNodeType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <h1>ICodeNodeImpl</h1>
@@ -14,9 +17,9 @@ import java.util.*;
  */
 public class ICodeNodeImpl extends HashMap<ICodeKey, Object> implements ICodeNode {
 
-  private ICodeNodeType type;
+  private final ICodeNodeType type;
   private ICodeNode parent;
-  private ArrayList<ICodeNode> children;
+  private final ArrayList<ICodeNode> children;
 
   public ICodeNodeImpl(ICodeNodeType type) {
     this.type = type;
