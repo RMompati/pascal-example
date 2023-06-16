@@ -47,7 +47,7 @@ public class Pascal {
       parser.addMessageListener(new ParserMessageListener());
 
       backend = BackendFactory.createBackend(operation);
-      backend.addMessageListener(new BackendMessageListener());
+      backend.addMessageListener(new BackendMessageListener(true));
 
       parser.parse();
       source.close();
@@ -209,8 +209,17 @@ public class Pascal {
           "\n%,20d statements executed.\n%,20d runtime errors.\n%,20.2f seconds total execution time.\n";
   private static final String COMPILER_SUMMARY_FORMAT =
           "\n%,20d instructions generated.\n%,20.2f seconds total execution time.\n";
+  private static final String ASSIGN_FORMAT =
+      " >>> LINE %03d: %s = %s\n";
 
   private class BackendMessageListener implements MessageListener {
+
+    private boolean firstOutPutMessage;
+
+    public BackendMessageListener(boolean firstOutPutMessage) {
+      this.firstOutPutMessage = firstOutPutMessage;
+    }
+
     /**
      * Called to receive a message sent by a message producer.
      *
@@ -220,6 +229,32 @@ public class Pascal {
     public void messageReceived(Message message) {
       MessageType type = message.getType();
       switch (type) {
+        case ASSIGN: {
+          if (firstOutPutMessage) {
+            System.out.println("\n===== OUTPUT =====\n");
+            firstOutPutMessage = false;
+          }
+
+          Object[] body = (Object[]) message.getBody();
+          int lineNumber = (Integer) body[0];
+          String variableName = (String) body[1];
+          Object value = body[2];
+
+          System.out.printf(ASSIGN_FORMAT, lineNumber, variableName, value);
+          break;
+        }
+        case RUNTIME_ERROR: {
+          Object[] body = (Object[]) message.getBody();
+          String errorMessage = (String) body[0];
+          Integer lineNumber = (Integer) body[1];
+
+          System.out.print("*** RUNTIME ERROR");
+          if (lineNumber != null) {
+            System.out.print(" AT LINE " + String.format("%03d", lineNumber));
+          }
+          System.out.println(": " + errorMessage);
+          break;
+        }
         case INTERPRETER_SUMMARY: {
           Number[] body = (Number[]) message.getBody();
           int executionCount = (Integer) body[0];
