@@ -26,6 +26,10 @@ import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
  */
 public class ExpressionParser extends StatementParser {
 
+  // Synchronization set for starting an expression.
+  static final EnumSet<PascalTokenType> EXPR_START_SET =
+      EnumSet.of(PLUS, MINUS, IDENTIFIER, INTEGER, REAL, STRING, PascalTokenType.NOT, LEFT_PAREN);
+
   // Set of relational operators.
   private static final EnumSet<PascalTokenType> REL_OPS =
       EnumSet.of(EQUALS, NOT_EQUALS, LESS_THAN, LESS_EQUALS, GREATER_THAN, GREATER_EQUALS);

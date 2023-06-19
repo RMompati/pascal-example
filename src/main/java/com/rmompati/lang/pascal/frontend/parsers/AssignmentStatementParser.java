@@ -5,6 +5,9 @@ import com.rmompati.lang.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
+import com.rmompati.lang.pascal.frontend.PascalTokenType;
+
+import java.util.EnumSet;
 
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.ID;
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.ASSIGN;
@@ -13,6 +16,16 @@ import static com.rmompati.lang.pascal.frontend.PascalTokenType.COLON_EQUALS;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_COLON_EQUALS;
 
 public class AssignmentStatementParser extends StatementParser {
+
+  // Synchronization set for the ":=" token.
+  private static final EnumSet<PascalTokenType> COLON_EQUALS_SET =
+      ExpressionParser.EXPR_START_SET.clone();
+
+  static {
+    COLON_EQUALS_SET.add(COLON_EQUALS);
+    COLON_EQUALS_SET.addAll(StatementParser.STMT_FOLLOW_SET);
+  }
+
   /**
    * Constructor.
    *
@@ -53,7 +66,8 @@ public class AssignmentStatementParser extends StatementParser {
     // ASSIGN node adopts the variable node as its first child.
     assignNode.addChild(variableNode);
 
-    // Look for the  := token
+    // Synchronize on the  := token
+    token = synchronize(COLON_EQUALS_SET);
     if (token.getType() == COLON_EQUALS) {
       token = nextToken(); // Consume :=
     } else {
