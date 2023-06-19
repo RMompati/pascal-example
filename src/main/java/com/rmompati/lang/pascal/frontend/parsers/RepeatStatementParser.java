@@ -4,7 +4,6 @@ import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
-import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.LOOP;
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.TEST;
@@ -35,14 +34,14 @@ public class RepeatStatementParser extends StatementParser {
    */
   @Override
   public ICodeNode parse(Token token) throws Exception {
-    token = currentToken();
+    token = nextToken(); // Consume the REPEAT token.
 
     // Create the LOOP and TEST nodes.
     ICodeNode loopNode = ICodeFactory.createICodeNode(LOOP);
     ICodeNode testNode = ICodeFactory.createICodeNode(TEST);
 
     // Parse the statement list terminated by the UNTIL token.
-    StatementParser statementParser = new RepeatStatementParser(this);
+    StatementParser statementParser = new StatementParser(this);
     statementParser.parseList(token, loopNode, UNTIL, MISSING_UNTIL);
     token = currentToken();
 
