@@ -9,14 +9,28 @@ import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
 import com.rmompati.lang.pascal.frontend.error.PascalErrorCode;
 
+import java.util.EnumSet;
+
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.LINE;
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.NO_OP;
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.IDENTIFIER;
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.SEMICOLON;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_SEMICOLON;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.UNEXPECTED_TOKEN;
 
-public class StatementParser extends PascalParserTD{
+/**
+ * <h1>StatementParser</h1>
+ *
+ * <p>A base parser for a Pascal Statement.</p>
+ */
+public class StatementParser extends PascalParserTD {
+
+  // Synchronization set for starting a statement.
+  protected static final EnumSet<PascalTokenType> STMT_START_SET =
+      EnumSet.of(BEGIN, CASE, FOR, IF, REPEAT, WHILE, IDENTIFIER, SEMICOLON);
+
+  // Synchronization set for following a statement.
+  protected static final EnumSet<PascalTokenType> STMT_FOLLOW_SET =
+      EnumSet.of(SEMICOLON, END, ELSE, UNTIL, DOT);
 
   /**
    * Constructor.
