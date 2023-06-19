@@ -1,8 +1,6 @@
 package com.rmompati.lang.pascal.frontend;
 
-import com.rmompati.lang.frontend.Parser;
-import com.rmompati.lang.frontend.Scanner;
-import com.rmompati.lang.frontend.Token;
+import com.rmompati.lang.frontend.*;
 import com.rmompati.lang.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.message.Message;
@@ -11,6 +9,7 @@ import com.rmompati.lang.pascal.frontend.error.PascalErrorHandler;
 import com.rmompati.lang.pascal.frontend.parsers.StatementParser;
 
 import java.io.IOException;
+import java.util.EnumSet;
 
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.BEGIN;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.DOT;
@@ -40,6 +39,29 @@ public class PascalParserTD extends Parser {
    */
   public PascalParserTD(PascalParserTD parent) {
     super(parent.getScanner());
+  }
+
+
+  /**
+   * Synchronise the parser.
+   * @param syncSet the set of token types for synchronizing the parser.
+   * @return the token where the parser has synchronized.
+   * @throws Exception if an error occurs.
+   */
+  public Token synchronize(EnumSet<? extends TokenType> syncSet) throws Exception {
+    Token token = currentToken();
+
+    // If the current is not in the synchronization set, then it is unexpected and
+    // the parser must recover.
+    if (!syncSet.contains(token.getType())) {
+      // Flag the unexpected token.
+      errorHandler.flag(token, UNEXPECTED_TOKEN, this);
+      // Recover by skipping tokens not in the syncSet.
+      do {
+        token = nextToken();
+      } while (!(token instanceof EofToken) && !syncSet.contains(token.getType()));
+    }
+    return token;
   }
 
   /**
