@@ -15,7 +15,6 @@ import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.LINE;
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.NO_OP;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_SEMICOLON;
-import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.UNEXPECTED_TOKEN;
 
 /**
  * <h1>StatementParser</h1>
@@ -116,6 +115,10 @@ public class StatementParser extends PascalParserTD {
    */
   protected void parseList(Token token, ICodeNode parentNode, PascalTokenType terminator,
                            PascalErrorCode errorCode) throws Exception {
+
+    EnumSet<PascalTokenType> terminatorSet = STMT_START_SET.clone();
+    terminatorSet.add(terminator);
+
     // Loop to parse each statement until the "END" token, or end of source file.
     while (!(token instanceof EofToken) && (token.getType() != terminator)) {
       // parse a statement. The parent node adopts the statement node.
@@ -128,12 +131,12 @@ public class StatementParser extends PascalParserTD {
       // Look for the semicolon between statements.
       if (tokenType == SEMICOLON) {
         token = nextToken();
-      } else if (tokenType == IDENTIFIER) {
+      } else if (STMT_START_SET.contains(tokenType)) {
         errorHandler.flag(token, MISSING_SEMICOLON, this);
-      } else if (tokenType != terminator) {
-        errorHandler.flag(token, UNEXPECTED_TOKEN, this);
-        token = nextToken(); // Consume the unexpected token.
       }
+
+      // Sync at the start of the next statement or at the terminator.
+      token = synchronize(terminatorSet);
     }
     // Look for the terminator token.
     if (token.getType() == terminator) {
