@@ -89,7 +89,7 @@ public class StatementParser extends PascalParserTD {
     }
 
     // Set the current line number as an attribute.
-    serLineNumber(statementNode, token);
+    setLineNumber(statementNode, token);
 
     return statementNode;
   }
@@ -99,7 +99,7 @@ public class StatementParser extends PascalParserTD {
    * @param node the ICode node.
    * @param token the token.
    */
-  protected void serLineNumber(ICodeNode node, Token token) {
+  protected void setLineNumber(ICodeNode node, Token token) {
     if (node != null) {
       node.setAttribute(LINE, token.getLineNum());
     }
