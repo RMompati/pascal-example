@@ -1,0 +1,5 @@
+BEGIN {WHILE syntax errors.}
+   WHILE  DO five := 5;
+
+   WHILE five = 5 five := 5 UNTIL five := 9;
+END. {mvn compile exec:java -Dexec.mainClass="com.rmompati.Pascal" -Dexec.args="compile -i ./examples/while-errs.txt"}
