@@ -46,7 +46,7 @@ public enum PascalErrorCode {
   MISSING_RIGHT_PAREN("Missing )"),
   MISSING_SEMICOLON("Missing ;"),
   MISSING_THEN("Missing THEN"),
-  MISSING_TO_DOWNTO("Missing TO_DOWNTO"),
+  MISSING_TO_DOWNTO("Missing TO or DOWNTO"),
   MISSING_UNTIL("Missing UNTIL"),
   MISSING_variable("Missing variable"),
   CASE_CONSTANT_REUSED("CASE constant reused"),
