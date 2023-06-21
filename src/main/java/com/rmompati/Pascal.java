@@ -67,7 +67,7 @@ public class Pascal {
 
       backend.process(iCode, symTabStack);
     } catch (Exception exc) {
-      System.out.println("**** Internal translator error. *****");
+      System.out.println("*** Internal translator error. *****");
       exc.printStackTrace();
     }
   }
@@ -184,7 +184,7 @@ public class Pascal {
           }
 
           // A pointer to the error followed by the error message.
-          flagBuffer.append("^\n***").append(errorMessage);
+          flagBuffer.append("^\n*** ").append(errorMessage);
 
           // Text, if any, of the bad token.
           if (tokenText != null) {
