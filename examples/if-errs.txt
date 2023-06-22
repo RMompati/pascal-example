@@ -1,0 +1,7 @@
+BEGIN {IF statements.}
+   i := 1;
+
+   IF i = 5;
+
+   IF i := 5 ELSE j := 9;
+END. {mvn compile exec:java -Dexec.mainClass="com.rmompati.Pascal" -Dexec.args="compile -i ./examples/if-errs.txt"}
