@@ -1,0 +1,8 @@
+BEGIN {WHILE statement execution. Calculate a square root of 2 using newton's method. }
+    number := 2;
+    root := number;
+    WHILE root * root - number > 0.000001 DO
+        BEGIN
+            root := (number / root + root) / 2;
+        END
+END. {mvn compile exec:java -Dexec.mainClass="com.rmompati.Pascal" -Dexec.args="execute ./examples/while-exec.txt"}
