@@ -43,6 +43,3 @@
 > ```
 > constant = neg_op identifier | neg_op number | string
 > ```
-
-
-...
