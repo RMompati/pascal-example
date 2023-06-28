@@ -87,12 +87,12 @@ public class PascalNumberToken extends PascalToken {
         if (type == INTEGER) {
             int integerValue = computeIntegerValue(wholeDigits);
             if (type != ERROR) {
-                value = new Integer(integerValue);
+                value = integerValue;
             }
         } else if (type == REAL) {
             float floatValue = computeFloatValue(wholeDigits, fractionalDigits, exponentsDigits, exponentSign);
             if (type != ERROR) {
-                value = new Float(floatValue);
+                value = floatValue;
             }
         }
     }
