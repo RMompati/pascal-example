@@ -70,7 +70,11 @@ public class ExpressionExecutor extends StatementExecutor {
 
         // Execute the expression and return the negative of its value.
         Object value = execute(expressionNode);
-        return (value instanceof Integer) ? -((Integer) value) : -((Float) value);
+        if (value instanceof Integer) {
+          return -((Integer) value);
+        } else {
+          return -((Float) value);
+        }
       }
       case NOT: {
         // Get the NOT node's expression node child.
