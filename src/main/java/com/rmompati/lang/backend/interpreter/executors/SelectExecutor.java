@@ -4,6 +4,7 @@ import com.rmompati.lang.backend.interpreter.Executor;
 import com.rmompati.lang.intermediate.ICodeNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
 
@@ -13,6 +14,9 @@ import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
  * <p>Executes select statements.</p>
  */
 public class SelectExecutor extends StatementExecutor {
+
+  private static HashMap<ICodeNode, HashMap<Object, ICodeNode>> jumpCache =
+      new HashMap<>();
 
   /**
    * Constructor.
@@ -31,21 +35,26 @@ public class SelectExecutor extends StatementExecutor {
    */
   @Override
   public Object execute(ICodeNode node) {
+    HashMap<Object, ICodeNode> jumpTable =
+        jumpCache.get(node);
+    if (jumpTable == null) {
+      jumpTable = createJumpTable(node);
+      jumpCache.put(node, jumpTable);
+    }
+
     // Get the "SELECT" node's children.
     ArrayList<ICodeNode> selectChildren = node.getChildren();
     ICodeNode exprNode = selectChildren.get(0);
 
-    // Execute the "SELECT" expression.
+    // Evaluate the "SELECT" expression.
     ExpressionExecutor expressionExecutor = new ExpressionExecutor(this);
     Object selectValue = expressionExecutor.execute(exprNode);
 
-    // Attempt to select a "SELECT_BRANCH".
-    ICodeNode selectedBranchNode = searchBranches(selectValue, selectChildren);
-
-    if (selectedBranchNode != null) {
-      ICodeNode stmtNode = selectedBranchNode.getChildren().get(1);
+    // If there is a selection, execute the SELECT_BRANCH's statement.
+    ICodeNode statementNode = jumpTable.get(selectValue);
+    if (statementNode != null) {
       StatementExecutor statementExecutor = new StatementExecutor(this);
-      statementExecutor.execute(stmtNode);
+      statementExecutor.execute(statementNode);
     }
 
     ++executionCount;
@@ -53,46 +62,26 @@ public class SelectExecutor extends StatementExecutor {
   }
 
   /**
-   * Search the "SELECT_BRANCH-es" to find a match.
-   * @param selectValue the value to match.
-   * @param selectChildren the children of the select node.
-   * @return the select branch node of matching select value.
+   * Create a jump table for a "SELECT" node.
+   * @param node the "SELECT" node.
+   * @return the jump table.
    */
-  private ICodeNode searchBranches(Object selectValue, ArrayList<ICodeNode> selectChildren) {
-    // Loop over the "SELECT_BRANCH-es" to find a map.
+  private HashMap<Object, ICodeNode> createJumpTable(ICodeNode node) {
+    HashMap<Object, ICodeNode> jumpTable = new HashMap<>();
+    // Loop over children that are select branch nodes.
+    ArrayList<ICodeNode> selectChildren = node.getChildren();
     for (int i = 1; i < selectChildren.size(); ++i) {
       ICodeNode branchNode = selectChildren.get(i);
-      if (searchConstants(selectValue, branchNode)) {
-        return branchNode;
+      ICodeNode constantsNode = branchNode.getChildren().get(0);
+      ICodeNode statementNode = branchNode.getChildren().get(1);
+
+      // Loop over the constants children of the branch's "CONSTANTS_NODE".
+      ArrayList<ICodeNode> constantsList = constantsNode.getChildren();
+      for (ICodeNode constantNode : constantsList) {
+        Object value = constantNode.getAttribute(VALUE);
+        jumpTable.put(value, statementNode);
       }
     }
-    return null;
-  }
-
-  /**
-   * Searches the constants of a SELECT_BRANCH for matching value.
-   * @param selectValue the value to match.
-   * @param branchNode the SELECT_BRANCH node.
-   * @return true if a match is found, false otherwise.
-   */
-  private boolean searchConstants(Object selectValue, ICodeNode branchNode) {
-    boolean integerMode = selectValue instanceof Integer;
-
-    ICodeNode constantsNode = branchNode.getChildren().get(0);
-    ArrayList<ICodeNode> constantsList = constantsNode.getChildren();
-
-    // Search the list of constants.
-    if (integerMode) {
-      for (ICodeNode constantNode : constantsList) {
-        int constant = (Integer) constantNode.getAttribute(VALUE);
-        if (((Integer) selectValue) == constant) return true;
-      }
-    } else {
-      for (ICodeNode constantNode : constantsList) {
-        String constant = (String) constantNode.getAttribute(VALUE);
-        if (((String) selectValue).equals(constant)) return true;
-      }
-    }
-    return false;
+    return jumpTable;
   }
 }
