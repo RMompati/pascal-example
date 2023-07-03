@@ -1,0 +1,46 @@
+
+CONST
+    factor = 8;
+    epsilon = 1.0e-6
+    ch = 'x';
+    limit = -epsilon;
+    message = 'Press the OK button to confirm your selection.';
+
+TYPE
+    range1 = 0..factor; {subrange of integer.}
+    range2 = 'a'..'q'; {subrange of char}
+    range3 = range1; {type identifier}
+
+    grades = (A, B, C, D, F); {enumeration}
+    passing A..D;
+
+    week = (monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+    weekday = monday..friday;
+    weekend = saturday..sunday;
+
+ar1 = ARRAY [grades] OF integer;
+ar2 = ARRAY [(alpha, beta, gamma)] OF range2;
+ar3 = ARRAY [weekday] OF ar2;
+ar4 = ARRAY [range3] OF (foo, bar, baz);
+ar5 = ARRAY [range1] OF ARRAY [range2] OF ARRAY[c..e] OF enum2;
+ar6 = ARRAY [range1, range2, c..e] OF enum2;
+
+rec1 =  RECORD
+            i : integer;
+            r : real;
+            b1, b2 : boolean;
+            c: char;
+        END;
+
+rec2 =  RECORD
+            ten : integer;
+            r : rec1;
+            a1, a2, a3 : ARRAY [range3] OF range2;
+        END;
+
+VAR
+    var1 : integer;
+    var2, var3 : range2;
+    var4 : ar2;
+    var5 : rec1;
+    direction: (north, south, east, west)
