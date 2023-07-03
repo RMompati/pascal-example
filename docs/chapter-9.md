@@ -14,28 +14,25 @@
 >                       |   ε
 > ```
 > ```
-> nonEmptydeclarations  =   "CONST" constantDeclaration
->                       |   "TYPE" typeDeclaration
->                       |   "VAR" variableDeclaration
+> nonEmptydeclarations  =   "CONST" constants
+>                       |   "TYPE" types
+>                       |   "VAR" variables
 >                       |   nonEmptydeclarations
 > ```
 > ```
-> constantDeclaration   =   constantDefinition ";"
->                       |   constantDefinition ";" constantDeclaration
+> constants             =   constantDefinition ";"
+>                       |   constantDefinition ";" constants
 > ```
 > ```
-> typeDeclaration       =   typeDefinition ";"
->                       |   typeDefinition ";" typeDeclaration
+> types                 =   typeDefinition ";"
+>                       |   typeDefinition ";" types
 > ```
 > ```
-> variableDeclaration   =   variableDefinition ";"
->                       |   variableDefinition ";" variableDeclaration
+> variables             =   variableDeclaration ";"
+>                       |   variableDeclaration ";" variables
 > ```
 > ```
 > constantDefinition    =   identifier "=" constant
-> ```
-> ```
-> variableDefinition    =   identifier
 > ```
 > ```
 > typeDefinition        =   identifier "=" typeSpecification
@@ -47,15 +44,11 @@
 > ```
 > ```
 > simpleType            =   identifier
->                       |   "(" identifierType ")"
+>                       |   "(" identifiers ")"
 >                       |   constant ".." constant
 > ```
 > ```
-> arrayType             =   "ARRAY" "[" identifierType "]" "OF" typeSpecification
-> ```
-> ```
-> identifierType        =   identifier
->                       |   idetifier "," identifierType
+> arrayType             =   "ARRAY" "[" identifiers "]" "OF" typeSpecification
 > ```
 > ```
 > recordType            =   "RECORD" fields "END"
@@ -64,10 +57,11 @@
 > fields                =   fieldDeclaration | fieldDeclaration "," fields
 > ```
 > ```
-> fieldDeclaration      =   identifiers
->                       |   typeSpecification
+> fieldDeclaration      =   identifiers ":" typeSpecification
 > ```
 > ```
-> identifiers           =   identifier |
+> variableDeclaration   =   identifiers ":" typeSpecification
 > ```
-> 
+> ```
+> identifiers           =   identifier | identifier "," identifiers
+> ```
