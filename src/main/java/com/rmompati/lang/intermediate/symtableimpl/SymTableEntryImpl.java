@@ -1,8 +1,6 @@
 package com.rmompati.lang.intermediate.symtableimpl;
 
-import com.rmompati.lang.intermediate.SymTable;
-import com.rmompati.lang.intermediate.SymTableEntry;
-import com.rmompati.lang.intermediate.SymTableKey;
+import com.rmompati.lang.intermediate.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +14,8 @@ public class SymTableEntryImpl extends HashMap<SymTableKey, Object> implements S
   private String name;
   private SymTable symTable;
   private ArrayList<Integer> lineNumbers;
+  private Definition definition;
+  private TypeSpec typeSpec;
 
   /**
    * Constructor
@@ -89,5 +89,45 @@ public class SymTableEntryImpl extends HashMap<SymTableKey, Object> implements S
   @Override
   public Object getAttribute(SymTableKey key) {
     return get(key);
+  }
+
+  /**
+   * Sets the definition.
+   *
+   * @param definition the definition set.
+   */
+  @Override
+  public void setDefinition(Definition definition) {
+    this.definition = definition;
+  }
+
+  /**
+   * Gets the definition.
+   *
+   * @return the definition.
+   */
+  @Override
+  public Definition getDefinition() {
+    return definition;
+  }
+
+  /**
+   * Sets the type specification.
+   *
+   * @param typeSpec the type specification set.
+   */
+  @Override
+  public void setTypeSpec(TypeSpec typeSpec) {
+    this.typeSpec = typeSpec;
+  }
+
+  /**
+   * Gets the type specification.
+   *
+   * @return the type specification.
+   */
+  @Override
+  public TypeSpec getTypeSpec() {
+    return typeSpec;
   }
 }

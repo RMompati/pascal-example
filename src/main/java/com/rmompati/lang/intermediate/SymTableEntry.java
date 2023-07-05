@@ -45,4 +45,28 @@ public interface SymTableEntry {
    * @return the attribute value.
    */
   public Object getAttribute(SymTableKey key);
+
+  /**
+   * Sets the definition.
+   * @param definition the definition set.
+   */
+  public void setDefinition(Definition definition);
+
+  /**
+   * Gets the definition.
+   * @return the definition.
+   */
+  public Definition getDefinition();
+
+  /**
+   * Sets the type specification.
+   * @param typeSpec the type specification set.
+   */
+  public void setTypeSpec(TypeSpec typeSpec);
+
+  /**
+   * Gets the type specification.
+   * @return the type specification.
+   */
+  public TypeSpec getTypeSpec();
 }
