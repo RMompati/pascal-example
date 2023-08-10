@@ -1,17 +1,22 @@
 package com.rmompati.lang.pascal.frontend;
 
 import com.rmompati.lang.frontend.*;
+import com.rmompati.lang.intermediate.ICode;
 import com.rmompati.lang.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
+import com.rmompati.lang.intermediate.SymTableEntry;
+import com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl;
+import com.rmompati.lang.intermediate.symtableimpl.Predefined;
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageType;
 import com.rmompati.lang.pascal.frontend.error.PascalErrorHandler;
-import com.rmompati.lang.pascal.frontend.parsers.StatementParser;
+import com.rmompati.lang.pascal.frontend.parsers.BlockParser;
 
 import java.io.IOException;
 import java.util.EnumSet;
 
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.BEGIN;
+import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ICODE;
+import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_SYMTAB;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.DOT;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 
@@ -23,6 +28,8 @@ import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 public class PascalParserTD extends Parser {
 
   protected static PascalErrorHandler errorHandler = new PascalErrorHandler();
+
+  private SymTableEntry routineId;
 
   /**
    * Constructor
@@ -73,22 +80,29 @@ public class PascalParserTD extends Parser {
   @Override
   public void parse() throws Exception {
     long startTime = System.currentTimeMillis();
-    iCode = ICodeFactory.createICode();
+    ICode iCode = ICodeFactory.createICode();
+    Predefined.initialize(symTabStack);
+
+    // Create a dummy program identifier symbol table entry.
+    routineId = symTabStack.enterLocal("PascalMain".toLowerCase());
+    routineId.setDefinition(DefinitionImpl.PROGRAM);
+    symTabStack.setProgramId(routineId);
+
+    routineId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+    routineId.setAttribute(ROUTINE_ICODE, iCode);
+
+    BlockParser blockParser = new BlockParser(this);
 
     try {
       Token token = nextToken();
-      ICodeNode rootNode = null;
 
-      // Look for the "BEGIN" token to parse a compound statement.
-      if (token.getType() == BEGIN) {
-        StatementParser statementParser = new StatementParser(this);
-        rootNode = statementParser.parse(token);
-        token = currentToken();
-      } else {
-        errorHandler.flag(token, UNEXPECTED_TOKEN, this);
-      }
+      // Parse block
+      ICodeNode rootNode = blockParser.parse(token, routineId);
+      iCode.setRoot(rootNode);
+      symTabStack.pop();
 
       // Look for the final period.
+      token = currentToken();
       if (token.getType() != DOT) {
         errorHandler.flag(token, MISSING_PERIOD, this);
       }
