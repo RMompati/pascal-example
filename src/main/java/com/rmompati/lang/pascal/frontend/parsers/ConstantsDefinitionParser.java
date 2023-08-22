@@ -124,6 +124,21 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
    * @throws Exception if an error occurs.
    */
   protected Object parseConstant(Token token) throws Exception {
+    TokenType sing = null;
+
+    token = synchronize(CONSTANT_START_SET);
+    TokenType tokenType = token.getType();
+
+    // Plus or minus sign
+    if ((tokenType == PLUS) || (tokenType == MINUS)) {
+      sing = tokenType;
+      token = nextToken(); // Consume the sign.
+    }
+
+    // Parse the constant
+    switch ((PascalTokenType)token.getType()) {
+      case IDENTIFIER: {}
+    }
     return null;
   }
 }
