@@ -2,6 +2,7 @@ package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
+import com.rmompati.lang.intermediate.Definition;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
@@ -10,6 +11,7 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 import java.util.EnumSet;
 
 import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.CONSTANT;
+import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.ENUMERATION_CONSTANT;
 import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.CONSTANT_VALUE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
@@ -124,21 +126,88 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
    * @throws Exception if an error occurs.
    */
   protected Object parseConstant(Token token) throws Exception {
-    TokenType sing = null;
+    TokenType sign = null;
 
     token = synchronize(CONSTANT_START_SET);
     TokenType tokenType = token.getType();
 
     // Plus or minus sign
     if ((tokenType == PLUS) || (tokenType == MINUS)) {
-      sing = tokenType;
+      sign = tokenType;
       token = nextToken(); // Consume the sign.
     }
 
     // Parse the constant
     switch ((PascalTokenType)token.getType()) {
-      case IDENTIFIER: {}
+      case IDENTIFIER: {
+        return parseIdentifierConstant(token, sign);
+      }
+      case INTEGER: {
+        Integer value = (Integer) token.getValue();
+        nextToken(); // consume the number.
+        return sign == MINUS ? -value : value;
+      }
+      case REAL: {
+        Float value = (Float) token.getValue();
+        nextToken(); // consume the number.
+        return sign == MINUS ? -value : value;
+      }
+      case STRING: {
+        if (sign != null) errorHandler.flag(token, INVALID_CONSTANT, this);
+
+        nextToken(); // Consume the string.
+        return String.valueOf(token.getValue());
+      }
+      default: {
+        errorHandler.flag(token, INVALID_CONSTANT, this);
+        return null;
+      }
     }
+  }
+
+  /**
+   * Parses an identifier constant
+   * @param token the current token.
+   * @param sign the sign, if any.
+   * @return Object the constant value.
+   * @throws Exception if an error occurs.
+   */
+  private Object parseIdentifierConstant(Token token, TokenType sign) throws Exception {
+    String name = token.getText();
+    SymTableEntry id = symTabStack.lookup(name);
+
+    nextToken(); // Consume the identifier.
+
+    if (id == null) {
+      errorHandler.flag(token, IDENTIFIER_REDEFINED, this);
+      return null;
+    }
+
+    Definition definition = id.getDefinition();
+    if (definition == CONSTANT) {
+      Object value = id.getAttribute(CONSTANT_VALUE);
+      id.appendLineNumber(token.getLineNum());
+
+      if (value instanceof Integer) return sign == MINUS ? -((Integer) value) : value;
+      else if (value instanceof Float) return sign == MINUS ? -((Float) value) : value;
+      else if (value instanceof String) {
+        if (sign != null) errorHandler.flag(token, INVALID_CONSTANT, this);
+
+        return value;
+      }
+    } else if (definition == ENUMERATION_CONSTANT) {
+      Object value = id.getAttribute(CONSTANT_VALUE);
+      id.appendLineNumber(token.getLineNum());
+
+      if (sign != null) errorHandler.flag(token, INVALID_CONSTANT, this);
+
+      return value;
+    } else if (definition == null) {
+      errorHandler.flag(token, NOT_CONSTANT_IDENTIFIER, this);
+      return null;
+    }
+
+    errorHandler.flag(token, INVALID_CONSTANT, this);
     return null;
   }
 }
