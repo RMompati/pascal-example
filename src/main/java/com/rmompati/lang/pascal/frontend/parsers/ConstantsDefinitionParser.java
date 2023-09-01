@@ -4,7 +4,9 @@ import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.Definition;
 import com.rmompati.lang.intermediate.SymTableEntry;
+import com.rmompati.lang.intermediate.TypeFactory;
 import com.rmompati.lang.intermediate.TypeSpec;
+import com.rmompati.lang.intermediate.symtableimpl.Predefined;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
@@ -111,11 +113,49 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
     }
   }
 
-  private TypeSpec getConstantType(Token constantToken) {
+  /**
+   * Return the type of the constant given its identifier.
+   * @param identifier the constant's identifier.
+   * @return the type specification.
+   */
+  private TypeSpec getConstantType(Token identifier) {
+    SymTableEntry id = symTabStack.lookup(identifier.getText());
+
+    if (id == null) return null;
+
+    Definition definition = id.getDefinition();
+    if ((definition == CONSTANT) || (definition == ENUMERATION_CONSTANT)) {
+      return id.getTypeSpec();
+    }
+
     return null;
   }
 
+  /**
+   * Return the type of the constant given its value.
+   * @param value the constant value.
+   * @return the type specification.
+   */
   private TypeSpec getConstantType(Object value) {
+
+    if (value instanceof Integer) {
+
+      return Predefined.integerType;
+    } else if (value instanceof Float) {
+
+      return Predefined.realType;
+    } else if (value instanceof String) {
+      String stringValue = (String) value;
+
+      if (stringValue.length() == 1) {
+
+        return Predefined.charType;
+      } else {
+
+        return TypeFactory.createStringType(stringValue);
+      }
+    }
+
     return null;
   }
 
