@@ -27,7 +27,7 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
   }
 
   /** Synchronization set for the starting a constant. */
-  private static final EnumSet<PascalTokenType> CONSTANT_START_SET =
+  static final EnumSet<PascalTokenType> CONSTANT_START_SET =
       EnumSet.of(IDENTIFIER, INTEGER, REAL, PLUS, MINUS, STRING, SEMICOLON);
 
   /** Synchronization set for the = token. */
