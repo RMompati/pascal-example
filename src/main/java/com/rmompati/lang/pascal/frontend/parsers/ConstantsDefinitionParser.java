@@ -118,7 +118,7 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
    * @param identifier the constant's identifier.
    * @return the type specification.
    */
-  private TypeSpec getConstantType(Token identifier) {
+  public TypeSpec getConstantType(Token identifier) {
     SymTableEntry id = symTabStack.lookup(identifier.getText());
 
     if (id == null) return null;
@@ -136,7 +136,7 @@ public class ConstantsDefinitionParser extends DeclarationsParser {
    * @param value the constant value.
    * @return the type specification.
    */
-  private TypeSpec getConstantType(Object value) {
+  public TypeSpec getConstantType(Object value) {
 
     if (value instanceof Integer) {
 
