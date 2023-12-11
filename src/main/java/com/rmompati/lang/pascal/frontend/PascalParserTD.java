@@ -80,7 +80,7 @@ public class PascalParserTD extends Parser {
   @Override
   public void parse() throws Exception {
     long startTime = System.currentTimeMillis();
-    ICode iCode = ICodeFactory.createICode();
+    iCode = ICodeFactory.createICode();
     Predefined.initialize(symTabStack);
 
     // Create a dummy program identifier symbol table entry.

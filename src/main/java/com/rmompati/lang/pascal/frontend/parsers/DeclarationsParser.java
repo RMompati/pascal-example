@@ -6,22 +6,23 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
 import java.util.EnumSet;
 
+import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.VARIABLE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 
 public class DeclarationsParser extends PascalParserTD {
 
-  static final EnumSet<PascalTokenType> DECLARATIONS_START_SET = EnumSet.of(CONST, TYPE, VAR, PROCEDURE);
-  static final EnumSet<PascalTokenType> TYPE_START_SET = EnumSet.of(CONST, TYPE, VAR, PROCEDURE);
+  static final EnumSet<PascalTokenType> DECLARATIONS_START_SET = EnumSet.of(CONST, TYPE, VAR, PROCEDURE, FUNCTION, BEGIN);
+  static final EnumSet<PascalTokenType> TYPE_START_SET = DECLARATIONS_START_SET.clone();
   static {
     TYPE_START_SET.remove(CONST);
   }
 
-  static final EnumSet<PascalTokenType> VAR_START_SET = EnumSet.of(CONST, TYPE, VAR, PROCEDURE);
+  static final EnumSet<PascalTokenType> VAR_START_SET = TYPE_START_SET.clone();
   static {
     VAR_START_SET.remove(TYPE);
   }
 
-  static final EnumSet<PascalTokenType> ROUTINE_START_SET = EnumSet.of(CONST, TYPE, VAR, PROCEDURE);
+  static final EnumSet<PascalTokenType> ROUTINE_START_SET = VAR_START_SET.clone();
   static {
     ROUTINE_START_SET.remove(VAR);
   }
@@ -61,7 +62,7 @@ public class DeclarationsParser extends PascalParserTD {
     if (token.getType() == VAR) {
       token = nextToken();  // Consume 'VAR'
       VariableDeclarationsParser variableDeclarationsParser = new VariableDeclarationsParser(this);
-//      variableDeclarationsParser.setDefinition(VARIABLE);
+      variableDeclarationsParser.setDefinition(VARIABLE);
       variableDeclarationsParser.parse(token);
     }
 
