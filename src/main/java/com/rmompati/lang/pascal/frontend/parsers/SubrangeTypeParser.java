@@ -51,7 +51,7 @@ public class SubrangeTypeParser extends TypeSpecificationParser {
     minValue = checkValueType(constantToken, minValue, minType);
 
     token = currentToken();
-    Boolean sawDotDot = false;
+    boolean sawDotDot = false;
 
     // Look for '..' token
     if (token.getType() == DOT_DOT) {
