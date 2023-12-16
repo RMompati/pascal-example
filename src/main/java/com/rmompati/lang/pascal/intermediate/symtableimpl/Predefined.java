@@ -1,16 +1,15 @@
-package com.rmompati.lang.intermediate.symtableimpl;
+package com.rmompati.lang.pascal.intermediate.symtableimpl;
 
 import com.rmompati.lang.intermediate.SymTabStack;
 import com.rmompati.lang.intermediate.SymTableEntry;
-import com.rmompati.lang.intermediate.TypeFactory;
+import com.rmompati.lang.pascal.intermediate.TypeFactory;
 import com.rmompati.lang.intermediate.TypeSpec;
 
 import java.util.ArrayList;
 
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.CONSTANT_VALUE;
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.ENUMERATION;
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.SCALAR;
-import static com.rmompati.lang.intermediate.typeimpl.TypeKeyImpl.ENUMERATION_CONSTANTS;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.ENUMERATION;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.SCALAR;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeKeyImpl.ENUMERATION_CONSTANTS;
 
 /**
  * <h1>Predefined</h1>
@@ -88,13 +87,13 @@ public class Predefined {
     falseId = symTabStack.enterLocal("false");
     falseId.setDefinition(DefinitionImpl.ENUMERATION_CONSTANT);
     falseId.setTypeSpec(booleanType);
-    falseId.setAttribute(CONSTANT_VALUE, 0);
+    falseId.setAttribute(SymTableKeyImpl.CONSTANT_VALUE, 0);
 
     // Boolean enumeration constant true.
     trueId = symTabStack.enterLocal("true");
     trueId.setDefinition(DefinitionImpl.ENUMERATION_CONSTANT);
     trueId.setTypeSpec(booleanType);
-    trueId.setAttribute(CONSTANT_VALUE, 1);
+    trueId.setAttribute(SymTableKeyImpl.CONSTANT_VALUE, 1);
 
     ArrayList<SymTableEntry> constants = new ArrayList<>();
     constants.add(falseId);

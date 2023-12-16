@@ -1,4 +1,4 @@
-package com.rmompati.lang.intermediate.icodeimpl;
+package com.rmompati.lang.pascal.intermediate.icodeimpl;
 
 import com.rmompati.lang.intermediate.ICodeNodeType;
 

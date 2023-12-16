@@ -2,7 +2,7 @@ package com.rmompati.lang.frontend;
 
 import com.rmompati.lang.intermediate.ICode;
 import com.rmompati.lang.intermediate.SymTabStack;
-import com.rmompati.lang.intermediate.SymTableFactory;
+import com.rmompati.lang.pascal.intermediate.SymTableFactory; // TODO: Fix this dependency.
 import com.rmompati.lang.message.Message;
 import com.rmompati.lang.message.MessageHandler;
 import com.rmompati.lang.message.MessageListener;

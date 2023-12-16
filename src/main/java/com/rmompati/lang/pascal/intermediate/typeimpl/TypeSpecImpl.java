@@ -1,16 +1,15 @@
-package com.rmompati.lang.intermediate.typeimpl;
+package com.rmompati.lang.pascal.intermediate.typeimpl;
 
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.intermediate.TypeForm;
 import com.rmompati.lang.intermediate.TypeKey;
 import com.rmompati.lang.intermediate.TypeSpec;
-import com.rmompati.lang.intermediate.symtableimpl.Predefined;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.Predefined;
 
 import java.util.HashMap;
 
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.ARRAY;
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.SUBRANGE;
-import static com.rmompati.lang.intermediate.typeimpl.TypeKeyImpl.*;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.ARRAY;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.SUBRANGE;
 
 /**
  * <h1>TypeSpecImpl</h1>
@@ -39,13 +38,13 @@ public class TypeSpecImpl extends HashMap<TypeKey, Object> implements TypeSpec {
     this.form = ARRAY;
 
     TypeSpec indexType = new TypeSpecImpl(SUBRANGE);
-    indexType.setAttribute(SUBRANGE_BASE_TYPE, Predefined.integerType);
-    indexType.setAttribute(SUBRANGE_MIN_VALUE, 1);
-    indexType.setAttribute(SUBRANGE_MAX_VALUE, value.length());
+    indexType.setAttribute(TypeKeyImpl.SUBRANGE_BASE_TYPE, Predefined.integerType);
+    indexType.setAttribute(TypeKeyImpl.SUBRANGE_MIN_VALUE, 1);
+    indexType.setAttribute(TypeKeyImpl.SUBRANGE_MAX_VALUE, value.length());
 
-    setAttribute(ARRAY_INDEX_TYPE, indexType);
-    setAttribute(ARRAY_ELEMENT_TYPE, Predefined.charType);
-    setAttribute(ARRAY_ELEMENT_COUNT, value.length());
+    setAttribute(TypeKeyImpl.ARRAY_INDEX_TYPE, indexType);
+    setAttribute(TypeKeyImpl.ARRAY_ELEMENT_TYPE, Predefined.charType);
+    setAttribute(TypeKeyImpl.ARRAY_ELEMENT_COUNT, value.length());
   }
 
   /**
@@ -108,8 +107,8 @@ public class TypeSpecImpl extends HashMap<TypeKey, Object> implements TypeSpec {
   @Override
   public boolean isPascalString() {
     if (form == ARRAY) {
-      TypeSpec elmType = (TypeSpec) getAttribute(ARRAY_ELEMENT_TYPE);
-      TypeSpec indexType = (TypeSpec) getAttribute(ARRAY_INDEX_TYPE);
+      TypeSpec elmType = (TypeSpec) getAttribute(TypeKeyImpl.ARRAY_ELEMENT_TYPE);
+      TypeSpec indexType = (TypeSpec) getAttribute(TypeKeyImpl.ARRAY_INDEX_TYPE);
 
       return (elmType.baseType() == Predefined.charType) && (indexType.baseType() == Predefined.integerType);
     } else {
@@ -124,6 +123,6 @@ public class TypeSpecImpl extends HashMap<TypeKey, Object> implements TypeSpec {
    */
   @Override
   public TypeSpec baseType() {
-    return (((TypeFormImpl) form) == SUBRANGE) ? (TypeSpec) getAttribute(SUBRANGE_BASE_TYPE) : this;
+    return (((TypeFormImpl) form) == SUBRANGE) ? (TypeSpec) getAttribute(TypeKeyImpl.SUBRANGE_BASE_TYPE) : this;
   }
 }

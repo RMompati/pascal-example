@@ -4,7 +4,7 @@ import com.rmompati.lang.backend.Backend;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.message.Message;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.LINE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.LINE;
 import static com.rmompati.lang.message.MessageType.RUNTIME_ERROR;
 
 /**

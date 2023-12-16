@@ -1,6 +1,8 @@
-package com.rmompati.lang.intermediate;
+package com.rmompati.lang.pascal.intermediate;
 
-import com.rmompati.lang.intermediate.typeimpl.TypeSpecImpl;
+import com.rmompati.lang.intermediate.TypeForm;
+import com.rmompati.lang.intermediate.TypeSpec;
+import com.rmompati.lang.pascal.intermediate.typeimpl.TypeSpecImpl;
 
 /**
  * <h1>TypeFactory</h1>

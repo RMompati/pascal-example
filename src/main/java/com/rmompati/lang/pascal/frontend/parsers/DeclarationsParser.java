@@ -6,7 +6,7 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
 import java.util.EnumSet;
 
-import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.VARIABLE;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl.VARIABLE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 
 public class DeclarationsParser extends PascalParserTD {

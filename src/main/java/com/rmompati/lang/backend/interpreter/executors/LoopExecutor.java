@@ -2,11 +2,11 @@ package com.rmompati.lang.backend.interpreter.executors;
 
 import com.rmompati.lang.backend.interpreter.Executor;
 import com.rmompati.lang.intermediate.ICodeNode;
-import com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl;
+import com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl;
 
 import java.util.List;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.TEST;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.TEST;
 
 /**
  * <h1>LoopExecutor</h1>

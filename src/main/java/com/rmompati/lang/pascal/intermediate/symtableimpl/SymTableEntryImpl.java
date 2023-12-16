@@ -1,4 +1,4 @@
-package com.rmompati.lang.intermediate.symtableimpl;
+package com.rmompati.lang.pascal.intermediate.symtableimpl;
 
 import com.rmompati.lang.intermediate.*;
 

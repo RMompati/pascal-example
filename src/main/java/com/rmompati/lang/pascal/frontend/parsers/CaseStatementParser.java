@@ -3,7 +3,7 @@ package com.rmompati.lang.pascal.frontend.parsers;
 import com.rmompati.lang.frontend.EofToken;
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
-import com.rmompati.lang.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
@@ -11,8 +11,8 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 import java.util.EnumSet;
 import java.util.HashSet;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 

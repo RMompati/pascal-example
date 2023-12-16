@@ -1,11 +1,11 @@
-package com.rmompati.lang.intermediate.symtableimpl;
+package com.rmompati.lang.pascal.intermediate.symtableimpl;
 
 import com.rmompati.lang.intermediate.Definition;
 
 public enum DefinitionImpl implements Definition {
   CONSTANT, ENUMERATION_CONSTANT("enumeration constant"),
   TYPE, VARIABLE, FIELD("record field"),
-  VALUE_PARM("value parameter"),
+  VALUE_PARAM("value parameter"),
   PROGRAM, PROCEDURE, FUNCTION,
   UNDEFINED;
 

@@ -1,6 +1,6 @@
-package com.rmompati.lang.intermediate.icodeimpl;
+package com.rmompati.lang.pascal.intermediate.icodeimpl;
 
-import com.rmompati.lang.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeKey;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.ICodeNodeType;

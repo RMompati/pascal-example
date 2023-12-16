@@ -1,13 +1,13 @@
 package com.rmompati.lang.util;
 
 import com.rmompati.lang.intermediate.*;
-import com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl;
-import com.rmompati.lang.intermediate.typeimpl.TypeFormImpl;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl;
+import com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl;
 
 import java.util.ArrayList;
 
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.*;
-import static com.rmompati.lang.intermediate.typeimpl.TypeKeyImpl.*;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.*;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeKeyImpl.*;
 
 /**
  * <h1>CrossReferencer</h1>

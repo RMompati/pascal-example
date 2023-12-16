@@ -6,7 +6,7 @@ import com.rmompati.lang.intermediate.ICodeNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
 
 /**
  * <h1>SelectExecutor</h1>

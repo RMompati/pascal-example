@@ -1,15 +1,15 @@
 package com.rmompati.lang.util;
 
 import com.rmompati.lang.intermediate.*;
-import com.rmompati.lang.intermediate.icodeimpl.ICodeNodeImpl;
+import com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeImpl;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ICODE;
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ROUTINES;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ICODE;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ROUTINES;
 
 /**
  * <h1>ParseTreePrinter</h1>

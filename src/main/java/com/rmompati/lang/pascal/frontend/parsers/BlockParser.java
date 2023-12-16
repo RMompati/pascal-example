@@ -2,12 +2,12 @@ package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
-import com.rmompati.lang.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.COMPOUND;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.COMPOUND;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.BEGIN;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.END;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_BEGIN;

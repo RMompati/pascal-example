@@ -3,17 +3,17 @@ package com.rmompati.lang.backend.interpreter.executors;
 import com.rmompati.lang.backend.interpreter.Executor;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
-import com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl;
+import com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import static com.rmompati.lang.backend.interpreter.RuntimeErrorCode.DIVISION_BY_ZERO;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.ID;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.DATA_VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.DATA_VALUE;
 
 /**
  * <h1>ExpressionExecutor</h1>

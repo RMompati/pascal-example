@@ -1,4 +1,4 @@
-package com.rmompati.lang.intermediate.typeimpl;
+package com.rmompati.lang.pascal.intermediate.typeimpl;
 
 import com.rmompati.lang.intermediate.TypeForm;
 

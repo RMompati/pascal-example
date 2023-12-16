@@ -7,9 +7,9 @@ import com.rmompati.lang.message.Message;
 
 import java.util.ArrayList;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.ID;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.LINE;
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.DATA_VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.LINE;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.DATA_VALUE;
 import static com.rmompati.lang.message.MessageType.ASSIGN;
 
 /**

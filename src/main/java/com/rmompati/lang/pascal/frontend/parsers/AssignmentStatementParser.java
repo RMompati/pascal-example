@@ -1,7 +1,7 @@
 package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
-import com.rmompati.lang.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
@@ -9,9 +9,9 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
 import java.util.EnumSet;
 
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeKeyImpl.ID;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.ASSIGN;
-import static com.rmompati.lang.intermediate.icodeimpl.ICodeNodeTypeImpl.VARIABLE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.ASSIGN;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.VARIABLE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.COLON_EQUALS;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_COLON_EQUALS;
 

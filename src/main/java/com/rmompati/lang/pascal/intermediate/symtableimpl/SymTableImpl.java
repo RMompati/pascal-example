@@ -1,8 +1,8 @@
-package com.rmompati.lang.intermediate.symtableimpl;
+package com.rmompati.lang.pascal.intermediate.symtableimpl;
 
 import com.rmompati.lang.intermediate.SymTable;
 import com.rmompati.lang.intermediate.SymTableEntry;
-import com.rmompati.lang.intermediate.SymTableFactory;
+import com.rmompati.lang.pascal.intermediate.SymTableFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;

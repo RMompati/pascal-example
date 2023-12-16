@@ -3,7 +3,7 @@ package com.rmompati.lang.pascal.frontend.parsers;
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.SymTableEntry;
-import com.rmompati.lang.intermediate.TypeFactory;
+import com.rmompati.lang.pascal.intermediate.TypeFactory;
 import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
@@ -11,10 +11,10 @@ import com.rmompati.lang.pascal.frontend.PascalTokenType;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
-import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.ENUMERATION_CONSTANT;
-import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.CONSTANT_VALUE;
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.ENUMERATION;
-import static com.rmompati.lang.intermediate.typeimpl.TypeKeyImpl.ENUMERATION_CONSTANTS;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl.ENUMERATION_CONSTANT;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.SymTableKeyImpl.CONSTANT_VALUE;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.ENUMERATION;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeKeyImpl.ENUMERATION_CONSTANTS;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 

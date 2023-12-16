@@ -1,16 +1,16 @@
 package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
-import com.rmompati.lang.intermediate.TypeFactory;
+import com.rmompati.lang.pascal.intermediate.TypeFactory;
 import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
 
 import java.util.EnumSet;
 
-import static com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl.FIELD;
-import static com.rmompati.lang.intermediate.typeimpl.TypeFormImpl.RECORD;
-import static com.rmompati.lang.intermediate.typeimpl.TypeKeyImpl.RECORD_SYMTAB;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl.FIELD;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.RECORD;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeKeyImpl.RECORD_SYMTAB;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.END;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.SEMICOLON;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_END;

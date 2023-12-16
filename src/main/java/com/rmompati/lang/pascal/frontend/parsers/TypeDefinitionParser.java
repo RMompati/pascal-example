@@ -4,10 +4,9 @@ import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.intermediate.TypeSpec;
-import com.rmompati.lang.intermediate.symtableimpl.DefinitionImpl;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
-import com.rmompati.lang.pascal.frontend.error.PascalErrorCode;
 
 import java.util.EnumSet;
 
