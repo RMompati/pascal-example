@@ -1,15 +1,15 @@
 package com.rmompati.lang.util;
 
-import com.rmompati.lang.intermediate.ICode;
-import com.rmompati.lang.intermediate.ICodeKey;
-import com.rmompati.lang.intermediate.ICodeNode;
-import com.rmompati.lang.intermediate.SymTableEntry;
+import com.rmompati.lang.intermediate.*;
 import com.rmompati.lang.intermediate.icodeimpl.ICodeNodeImpl;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+
+import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ICODE;
+import static com.rmompati.lang.intermediate.symtableimpl.SymTableKeyImpl.ROUTINE_ROUTINES;
 
 /**
  * <h1>ParseTreePrinter</h1>
@@ -32,17 +32,45 @@ public class ParseTreePrinter {
     this.length = 0;
     this.indentation = "";
     this.line = new StringBuilder();
-
-    this.indent = "";
-    for (int i = 0; i < INDENT_WIDTH; i++) {
-      this.indent += " ";
-    }
+    this.indent = " ".repeat(INDENT_WIDTH);
   }
 
   public void print(ICode iCode) {
     ps.println("\n===== INTERMEDIATE CODE =====\n");
     printNode((ICodeNodeImpl) iCode.getRoot());
     printLine();
+  }
+
+  /**
+   * Prints rhe intermediate code as a parse tree.
+   * @param symTabStack the symbol table stack.
+   */
+  public void print(SymTabStack symTabStack) {
+    ps.println("\n===== INTERMEDIATE CODE =====\n");
+    SymTableEntry programId = symTabStack.getProgramId();
+    printRoutine(programId);
+
+  }
+
+  /**
+   * Prints the parse tree of a routine.
+   * @@param routineId the routine identifier's symbol table entry.
+   */
+  public void printRoutine(SymTableEntry routineId) {
+    Definition definition = routineId.getDefinition();
+    System.out.printf("\n*** %s %s ***\n\n", definition.toString(), routineId.getName());
+
+    // Print the intermediate code in the routine's symbol table entry.
+    ICode iCode = (ICode) routineId.getAttribute(ROUTINE_ICODE);
+    if (iCode.getRoot() != null) {
+      printNode((ICodeNodeImpl) iCode.getRoot());
+    }
+
+    // Print any procedures and functions defined in the routine.
+    ArrayList<SymTableEntry> routineIds = (ArrayList<SymTableEntry>) routineId.getAttribute(ROUTINE_ROUTINES);
+    if (routineIds != null) {
+      routineIds.forEach(this::printRoutine);
+    }
   }
 
   /**
