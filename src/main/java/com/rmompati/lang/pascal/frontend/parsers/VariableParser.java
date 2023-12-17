@@ -15,7 +15,7 @@ import java.util.EnumSet;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 
-public class VariableDeclarationsParser extends DeclarationsParser {
+public class VariableParser extends DeclarationsParser {
 
   /** Definition for the identifier. */
   private Definition definition;
@@ -61,7 +61,7 @@ public class VariableDeclarationsParser extends DeclarationsParser {
    *
    * @param parent the parent parser.
    */
-  public VariableDeclarationsParser(PascalParserTD parent) {
+  public VariableParser(PascalParserTD parent) {
     super(parent);
   }
 

@@ -15,7 +15,6 @@ import com.rmompati.lang.pascal.intermediate.typeimpl.TypeChecker;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
@@ -335,21 +334,7 @@ public class ExpressionParser extends StatementParser {
 
     switch ((PascalTokenType) tokenType) {
       case IDENTIFIER: {
-        // Look up the identifier in the symbol table stack.
-        // Flag the identifier as undefined if it's not found.
-        String name = token.getText().toLowerCase();
-        SymTableEntry id = symTabStack.lookup(name);
-        if (id == null) {
-          errorHandler.flag(token, IDENTIFIER_UNDEFINED, this);
-          id = symTabStack.enterLocal(name);
-        }
-
-        rootNode = ICodeFactory.createICodeNode(VARIABLE);
-        rootNode.setAttribute(ID, id);
-        id.appendLineNumber(token.getLineNum());
-
-        token = nextToken(); // consume the identifier.
-        break;
+        return parseIdentifier(token);
       }
       case INTEGER: {
         // Create an INTEGER_CONSTANT node as the root node.
@@ -490,7 +475,7 @@ public class ExpressionParser extends StatementParser {
         break;
       }
       default: {
-        VariableDeclarationsParser variableParser = new VariableDeclarationsParser(this);
+        VariableParser variableParser = new VariableParser(this);
         rootNode = variableParser.parse(token, id);
       }
     }
