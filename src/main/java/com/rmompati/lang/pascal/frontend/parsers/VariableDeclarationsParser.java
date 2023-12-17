@@ -3,6 +3,7 @@ package com.rmompati.lang.pascal.frontend.parsers;
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.Definition;
+import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
@@ -192,5 +193,15 @@ public class VariableDeclarationsParser extends DeclarationsParser {
 
   public void setDefinition(Definition definition) {
     this.definition = definition;
+  }
+
+  /**
+   * Parses a variable.
+   * @param token the initial token.
+   * @return the root node of the generated parse tree.
+   * @throws Exception if an error occurs.
+   */
+  public ICodeNode parse(Token token, SymTableEntry id) throws Exception {
+    return null;
   }
 }

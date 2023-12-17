@@ -1,5 +1,6 @@
 package com.rmompati.lang.pascal.intermediate.icodeimpl;
 
+import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeKey;
 import com.rmompati.lang.intermediate.ICodeNode;
@@ -19,6 +20,7 @@ public class ICodeNodeImpl extends HashMap<ICodeKey, Object> implements ICodeNod
 
   private final ICodeNodeType type;
   private ICodeNode parent;
+  private TypeSpec typeSpec;
   private final ArrayList<ICodeNode> children;
 
   public ICodeNodeImpl(ICodeNodeType type) {
@@ -112,6 +114,26 @@ public class ICodeNodeImpl extends HashMap<ICodeKey, Object> implements ICodeNod
     }
 
     return copy;
+  }
+
+  /**
+   * Sets the type specification of this node.
+   *
+   * @param typeSpec the type specification to set. 167
+   */
+  @Override
+  public void setTypeSpec(TypeSpec typeSpec) {
+    this.typeSpec = typeSpec;
+  }
+
+  /**
+   * Returns the type specification of this node.
+   *
+   * @return the type specification.
+   */
+  @Override
+  public TypeSpec getTypeSpec() {
+    return typeSpec;
   }
 
   @Override

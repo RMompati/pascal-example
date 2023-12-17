@@ -53,4 +53,16 @@ public interface ICodeNode {
    * @return the copy.
    */
   ICodeNode copy();
+
+  /**
+   * Sets the type specification of this node.
+   * @param typeSpec  the type specification to set. 167
+   */
+  void setTypeSpec(TypeSpec typeSpec);
+
+  /**
+   * Returns the type specification of this node.
+   * @return the type specification.
+   */
+  TypeSpec getTypeSpec();
 }
