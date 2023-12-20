@@ -475,8 +475,8 @@ public class ExpressionParser extends StatementParser {
         break;
       }
       default: {
-        VariableParser variableParser = new VariableParser(this);
-        rootNode = variableParser.parse(token, id);
+        VariableParser variableDeclarationsParser = new VariableParser(this);
+        rootNode = variableDeclarationsParser.parse(token, id);
       }
     }
 

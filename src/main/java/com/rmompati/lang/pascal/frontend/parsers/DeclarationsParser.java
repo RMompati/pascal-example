@@ -61,9 +61,9 @@ public class DeclarationsParser extends PascalParserTD {
     token = synchronize(VAR_START_SET);
     if (token.getType() == VAR) {
       token = nextToken();  // Consume 'VAR'
-      VariableParser variableParser = new VariableParser(this);
-      variableParser.setDefinition(VARIABLE);
-      variableParser.parse(token);
+      VariableDeclarationsParser variableDeclarationsParser = new VariableDeclarationsParser(this);
+      variableDeclarationsParser.setDefinition(VARIABLE);
+      variableDeclarationsParser.parse(token);
     }
 
     token = synchronize(ROUTINE_START_SET);

@@ -5,7 +5,7 @@ import com.rmompati.lang.intermediate.Definition;
 public enum DefinitionImpl implements Definition {
   CONSTANT, ENUMERATION_CONSTANT("enumeration constant"),
   TYPE, VARIABLE, FIELD("record field"),
-  VALUE_PARAM("value parameter"),
+  VALUE_PARAM("value parameter"), VAR_PARAM("parameter variable"),
   PROGRAM, PROCEDURE, FUNCTION,
   UNDEFINED;
 

@@ -1,63 +1,32 @@
 package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
-import com.rmompati.lang.frontend.TokenType;
 import com.rmompati.lang.intermediate.Definition;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.intermediate.SymTableEntry;
 import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.Predefined;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
-import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
-import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.DOT;
+import static com.rmompati.lang.pascal.frontend.PascalTokenType.LEFT_BRACKET;
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.IDENTIFIER_UNDEFINED;
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.INVALID_IDENTIFIER_USAGE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
+import static com.rmompati.lang.pascal.intermediate.symtableimpl.DefinitionImpl.*;
 
-public class VariableParser extends DeclarationsParser {
+public class VariableParser  extends StatementParser {
 
-  /** Definition for the identifier. */
-  private Definition definition;
-
-  /** Synchronization set for a variable identifier. */
-  private static final EnumSet<PascalTokenType> IDENTIFIER_SET =
-      DeclarationsParser.VAR_START_SET.clone();
-  static {
-    IDENTIFIER_SET.add(IDENTIFIER);
-    IDENTIFIER_SET.add(END);
-    IDENTIFIER_SET.add(SEMICOLON);
-  }
-
-  /** Synchronization set for the start of the next definition or declaration. */
-  private static final EnumSet<PascalTokenType> NEXT_START_SET =
-      DeclarationsParser.ROUTINE_START_SET.clone();
-  static {
-    NEXT_START_SET.add(IDENTIFIER);
-    NEXT_START_SET.add(SEMICOLON);
-  }
-
-  /** Synchronization set to start a sublist identifier. */
-  private static final EnumSet<PascalTokenType> IDENTIFIER_START_SET =
-      EnumSet.of(IDENTIFIER, COMMA);
-
-  /** Synchronization set to follow a sublist identifier. */
-  private static final EnumSet<PascalTokenType> IDENTIFIER_FOLLOW_SET =
-      EnumSet.of(COLON, SEMICOLON);
-  static {
-    IDENTIFIER_FOLLOW_SET.addAll(DeclarationsParser.VAR_START_SET);
-  }
-
-  /** Synchronization set for the "," token. */
-  private static final EnumSet<PascalTokenType> COMMA_SET =
-      EnumSet.of(COMMA, COLON, IDENTIFIER, SEMICOLON);
-
-  /** Synchronization set for the ":" token. */
-  private static final  EnumSet<PascalTokenType> COLON_SET =
-      EnumSet.of(COLON, SEMICOLON);
+  private final EnumSet<PascalTokenType> SUBSCRIPT_FIELD_START_SET =
+      EnumSet.of(LEFT_BRACKET, DOT);
 
   /**
-   * Constructor.
+   * Constructor for subclasses.
    *
    * @param parent the parent parser.
    */
@@ -66,142 +35,72 @@ public class VariableParser extends DeclarationsParser {
   }
 
   /**
-   * Parses declarations.
-   * To be overridden by the specialized declarations parser subclasses.
-   *
-   * @param token the initial token.
-   * @throws Exception if an error occurs.
-   */
-  @Override
-  public void parse(Token token) throws Exception {
-    token = synchronize(IDENTIFIER_SET);
-
-    // Loop to parse a sequence of variable declarations seperated by semicolons.
-    while (token.getType() == IDENTIFIER) {
-      // Parse the identifier sublist and its type specification.
-      parseIdentifierSublist(token);
-
-      token = currentToken();
-      TokenType tokenType = token.getType();
-
-      // Look for one or more semicolons after a definition.
-      if (tokenType == SEMICOLON) {
-        while (token.getType() == SEMICOLON) {
-          token = nextToken(); // Consume the ";".
-        }
-      } else if (NEXT_START_SET.contains(tokenType)) {
-        errorHandler.flag(token, MISSING_SEMICOLON, this);
-      }
-
-      token = synchronize(IDENTIFIER_SET);
-    }
-  }
-
-  /**
-   * Parses a sublist of identifiers and their type specification.
-   * @param token the current token.
-   * @return the sublist of identifiers in a declaration.
-   * @throws Exception if an error occurs.
-   */
-  protected ArrayList<SymTableEntry> parseIdentifierSublist(Token token) throws Exception {
-    ArrayList<SymTableEntry> sublist = new ArrayList<>();
-
-    do {
-      token = synchronize(IDENTIFIER_START_SET);
-      SymTableEntry id = parseIdentifier(token);
-
-      if (id != null) sublist.add(id);
-
-      token = synchronize(COMMA_SET);
-      TokenType tokenType = token.getType();
-
-      // Look for the comma.
-      if (tokenType == COMMA) {
-        token = nextToken();
-
-        if (IDENTIFIER_FOLLOW_SET.contains(token.getType())) {
-          errorHandler.flag(token, MISSING_IDENTIFIER, this);
-        }
-      } else if (IDENTIFIER_START_SET.contains(tokenType)) {
-        errorHandler.flag(token, MISSING_COMMA, this);
-      }
-    } while (!IDENTIFIER_FOLLOW_SET.contains(token.getType()));
-
-    // Parse the type specification
-    TypeSpec type = parseTypeSpec(token);
-
-    for (SymTableEntry variableId : sublist) {
-      variableId.setTypeSpec(type);
-    }
-
-    return sublist;
-  }
-
-  /**
-   * Parses an identifier.
-   * @param token the current token.
-   * @return the symbol table entry of the identifier.
-   * @throws Exception if an error occurs.
-   */
-  private SymTableEntry parseIdentifier(Token token)  throws Exception {
-    SymTableEntry id = null;
-
-    if (token.getType() == IDENTIFIER) {
-      String name = token.getText().toLowerCase();
-      id = symTabStack.lookupLocal(name);
-
-      if (id == null) {
-        id = symTabStack.enterLocal(name);
-        id.setDefinition(definition);
-        id.appendLineNumber(token.getLineNum());
-      } else {
-        errorHandler.flag(token, IDENTIFIER_REDEFINED, this);
-      }
-
-      token =  nextToken();
-    } else {
-      errorHandler.flag(token, MISSING_IDENTIFIER, this);
-    }
-
-    return id;
-  }
-
-  /**
-   * Parses the type specification.
-   * @param token the current token.
-   * @return the type specification.
-   * @throws Exception if an error occurs.
-   */
-  protected TypeSpec parseTypeSpec(Token token) throws Exception {
-    token = synchronize(COLON_SET);
-
-    if (token.getType() == COLON) {
-      token = nextToken(); // Consume the ":".
-    } else {
-      errorHandler.flag(token, MISSING_COLON, this);
-    }
-
-    // Parse the type specification.
-    TypeSpecificationParser typeSpecificationParser = new TypeSpecificationParser(this);
-
-    return typeSpecificationParser.parse(token);
-  }
-
-  public Definition getDefinition() {
-    return definition;
-  }
-
-  public void setDefinition(Definition definition) {
-    this.definition = definition;
-  }
-
-  /**
    * Parses a variable.
    * @param token the initial token.
    * @return the root node of the generated parse tree.
    * @throws Exception if an error occurs.
    */
-  public ICodeNode parse(Token token, SymTableEntry id) throws Exception {
+  public ICodeNode parse(Token token) throws Exception {
+
+    String name = token.getText();
+    SymTableEntry variableId = symTabStack.lookup(name);
+
+    // If not found, flag the error and enter the identifier as undefined identifier with an undefined type.
+    if (variableId == null) {
+      errorHandler.flag(token, IDENTIFIER_UNDEFINED, this);
+      variableId = symTabStack.enterLocal(name);
+      variableId.setDefinition(UNDEFINED);
+      variableId.setTypeSpec(Predefined.undefinedType);
+    }
+
+    return parse(token, variableId);
+  }
+
+  /**
+   * Parses a variable.
+   * @param token the initial token.
+   * @param variableId the symbol table entry of the variable identifier.
+   * @return the root node of the generated parse tree.
+   * @throws Exception if an error occurs.
+   */
+  public ICodeNode parse(Token token, SymTableEntry variableId) throws Exception {
+    // Check how the variable was defined.
+    Definition dfnCode = variableId.getDefinition();
+    if ((dfnCode != VARIABLE) && (dfnCode != VALUE_PARAM) && (dfnCode != VAR_PARAM)) {
+      errorHandler.flag(token, INVALID_IDENTIFIER_USAGE, this);
+    }
+
+    variableId.appendLineNumber(token.getLineNum());
+
+    ICodeNode variableNode = ICodeFactory.createICodeNode(ICodeNodeTypeImpl.VARIABLE);
+    variableNode.setAttribute(ID, variableId);
+
+    token = nextToken(); // Consume the identifier.
+
+    // Parse array subscriptions or record fields.
+    TypeSpec variableType = variableId.getTypeSpec();
+    while (SUBSCRIPT_FIELD_START_SET.contains(token.getType())) {
+      ICodeNode subFldNode = token.getType() == LEFT_BRACKET
+          ? parseSubscriptions(variableType)
+          : parseField(variableType);
+
+      token = nextToken();
+
+      // Update the variable's type. The variable node adopts the SUBSCRIPTS or FIELD node.
+      variableType = subFldNode.getTypeSpec();
+      variableNode.addChild(subFldNode);
+    }
+
+    variableNode.setTypeSpec(variableType);
+
+    return variableNode;
+  }
+
+  private ICodeNode parseField(TypeSpec variableType) {
+    return null;
+  }
+
+  private ICodeNode parseSubscriptions(TypeSpec variableType) {
     return null;
   }
 }
