@@ -1,19 +1,20 @@
 package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
-import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
-import com.rmompati.lang.intermediate.SymTableEntry;
+import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
+import com.rmompati.lang.pascal.intermediate.ICodeFactory;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.Predefined;
+import com.rmompati.lang.pascal.intermediate.typeimpl.TypeChecker;
 
 import java.util.EnumSet;
 
-import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.ID;
-import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.ASSIGN;
-import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.VARIABLE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.COLON_EQUALS;
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.INCOMPATIBLE_TYPES;
 import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_COLON_EQUALS;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.ASSIGN;
 
 public class AssignmentStatementParser extends StatementParser {
 
@@ -48,35 +49,34 @@ public class AssignmentStatementParser extends StatementParser {
     // Create ASSIGN node.
     ICodeNode assignNode = ICodeFactory.createICodeNode(ASSIGN);
 
-    // Look up the identifier in the symbol table stack.
-    // Enter the identifier into the table if it's not found
-    String targetName = token.getText().toLowerCase();
-    SymTableEntry targetId = symTabStack.lookup(targetName);
-    if (targetId == null) {
-      targetId = symTabStack.enterLocal(targetName);
-    }
-    targetId.appendLineNumber(token.getLineNum());
+    // Parse the target variable
+    VariableParser variableParser = new VariableParser(this);
+    ICodeNode targetNode = variableParser.parse(token);
+    TypeSpec targetType = targetNode != null ? targetNode.getTypeSpec() : Predefined.undefinedType;
 
-    token = nextToken(); // Consume the identifier token.
+    // The ASSIGN node adopts the variable nodes as its first child.
+    assignNode.addChild(targetNode);
 
-    // Create the variable node and set its name attribute.
-    ICodeNode variableNode = ICodeFactory.createICodeNode(VARIABLE);
-    variableNode.setAttribute(ID, targetId);
-
-    // ASSIGN node adopts the variable node as its first child.
-    assignNode.addChild(variableNode);
-
-    // Synchronize on the  := token
+    // Synchronize the := token
     token = synchronize(COLON_EQUALS_SET);
     if (token.getType() == COLON_EQUALS) {
-      token = nextToken(); // Consume :=
+      token = nextToken();
     } else {
       errorHandler.flag(token, MISSING_COLON_EQUALS, this);
     }
 
-    // Parse the expression. The ASSIGN node adopts the expression's node as it's second child.
+    // Parse the expression. The ASSIGN node adopts the expression's node as it second child.
     ExpressionParser expressionParser = new ExpressionParser(this);
-    assignNode.addChild(expressionParser.parse(token));
+    ICodeNode exprNode = expressionParser.parse(token);
+    assignNode.addChild(exprNode);
+
+    // Type check: Assignment compatible?
+    TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec() : Predefined.undefinedType;
+    if (!TypeChecker.areAssignmentCompatible(targetType, exprType)) {
+      errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+    }
+
+    assignNode.setTypeSpec(targetType);
     return assignNode;
   }
 }
