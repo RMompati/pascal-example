@@ -1,13 +1,16 @@
 package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
+import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.Predefined;
 
 import java.util.EnumSet;
 
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.INCOMPATIBLE_TYPES;
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.IF;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.ELSE;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.THEN;
@@ -53,7 +56,14 @@ public class IfStatementParser extends StatementParser {
     // Parse the expression.
     // The "IF" node adopts the expression subtree as its first child.
     ExpressionParser expressionParser = new ExpressionParser(this);
-    ifNode.addChild(expressionParser.parse(token));
+    ICodeNode expressionNode = expressionParser.parse(token);
+    ifNode.addChild(expressionNode);
+
+    // Type Check: The expression type must be a boolean.
+    TypeSpec expressionType = expressionNode != null ? expressionNode.getTypeSpec() : Predefined.undefinedType;
+    if (expressionType != Predefined.booleanType) {
+      errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+    }
 
     // Synchronize at the "THEN".
     token = synchronize(THEN_SET);

@@ -2,18 +2,21 @@ package com.rmompati.lang.pascal.frontend.parsers;
 
 import com.rmompati.lang.frontend.Token;
 import com.rmompati.lang.frontend.TokenType;
+import com.rmompati.lang.intermediate.TypeSpec;
 import com.rmompati.lang.pascal.intermediate.ICodeFactory;
 import com.rmompati.lang.intermediate.ICodeNode;
 import com.rmompati.lang.pascal.frontend.PascalParserTD;
 import com.rmompati.lang.pascal.frontend.PascalTokenType;
+import com.rmompati.lang.pascal.intermediate.symtableimpl.Predefined;
+import com.rmompati.lang.pascal.intermediate.typeimpl.TypeChecker;
 
 import java.util.EnumSet;
 
+import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.*;
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
 import static com.rmompati.lang.pascal.frontend.PascalTokenType.*;
-import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_DO;
-import static com.rmompati.lang.pascal.frontend.error.PascalErrorCode.MISSING_TO_DOWNTO;
+import static com.rmompati.lang.pascal.intermediate.typeimpl.TypeFormImpl.ENUMERATION;
 
 /**
  * <h1>ForStatementParser</h1>
@@ -68,6 +71,12 @@ public class ForStatementParser extends StatementParser {
     // Parse the embedded initial assignment.
     AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
     ICodeNode initAssignNode = assignmentParser.parse(token);
+    TypeSpec controlType = initAssignNode != null ? initAssignNode.getTypeSpec() : Predefined.undefinedType;
+
+    // Type Check: The control variable's type must integer or enumeration.
+    if (!TypeChecker.isInteger(controlType) && (controlType.getForm() != ENUMERATION)) {
+      errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+    }
 
     // Set the current line number attribute
     setLineNumber(initAssignNode, targetToken);
@@ -90,6 +99,7 @@ public class ForStatementParser extends StatementParser {
 
     // Create a relational operator node: "GT" for "TO" or "LT" for "DOWNTO"
     ICodeNode relOpNode = ICodeFactory.createICodeNode((direction == TO) ? GT : LT);
+    relOpNode.setTypeSpec(Predefined.booleanType);
 
     // Copy the control "VARIABLE" node. The relational operator node adopts the
     // copied "VARIABLE" node as its first child.
@@ -98,7 +108,14 @@ public class ForStatementParser extends StatementParser {
 
     // Parse the termination expression. The relational operator node adopts the expression as its second child.
     ExpressionParser expressionParser = new ExpressionParser(this);
-    relOpNode.addChild(expressionParser.parse(token));
+    ICodeNode exprNode = expressionParser.parse(token);
+    relOpNode.addChild(exprNode);
+
+    // Type Check: The termination expression type must be an assignment compatible with the variable's type.
+    TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec() : Predefined.undefinedType;
+    if (!TypeChecker.areAssignmentCompatible(controlType, exprType)) {
+      errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+    }
 
     // The "TEST" node adopts the relational operator nodes as its only child.
     // The "LOOP" node adopts the "TEST" node as its first child.
