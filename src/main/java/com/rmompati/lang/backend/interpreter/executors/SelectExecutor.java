@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeKeyImpl.VALUE;
+import static com.rmompati.lang.pascal.intermediate.icodeimpl.ICodeNodeTypeImpl.STRING_CONSTANT;
 
 /**
  * <h1>SelectExecutor</h1>
@@ -35,8 +36,7 @@ public class SelectExecutor extends StatementExecutor {
    */
   @Override
   public Object execute(ICodeNode node) {
-    HashMap<Object, ICodeNode> jumpTable =
-        jumpCache.get(node);
+    HashMap<Object, ICodeNode> jumpTable = jumpCache.get(node);
     if (jumpTable == null) {
       jumpTable = createJumpTable(node);
       jumpCache.put(node, jumpTable);
@@ -79,6 +79,9 @@ public class SelectExecutor extends StatementExecutor {
       ArrayList<ICodeNode> constantsList = constantsNode.getChildren();
       for (ICodeNode constantNode : constantsList) {
         Object value = constantNode.getAttribute(VALUE);
+        if (constantNode.getType() == STRING_CONSTANT) {
+          value = ((String) value).charAt(0);
+        }
         jumpTable.put(value, statementNode);
       }
     }
